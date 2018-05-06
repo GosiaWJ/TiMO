@@ -11,8 +11,8 @@ Wykres::Wykres(QWidget *parent): QCustomPlot(parent)
     this->addGraph();
     this->graph(0)->setScatterStyle(QCPScatterStyle::ssCircle);
     this->graph(0)->setLineStyle(QCPGraph::lsNone);
-    this->graph(0)->keyAxis()->setLabel("time [s]");
-    this->graph(0)->valueAxis()->setLabel("velocity [%]");
+    this->graph(0)->keyAxis()->setLabel("x1");
+    this->graph(0)->valueAxis()->setLabel("x2");
 }
 /*!
  * \brief Wykres::plot - rysuje dane na wykresie

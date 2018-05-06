@@ -7,227 +7,34 @@
     <x>0</x>
     <y>0</y>
     <width>839</width>
-    <height>489</height>
+    <height>602</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout_4">
+   <layout class="QHBoxLayout" name="horizontalLayout_9">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QLabel" name="funkcja_celu_label">
-        <property name="text">
-         <string>Funkcja celu</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="funkcj_celu"/>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <spacer name="verticalSpacer_2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Minimum</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>18</width>
-        <height>18</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_8">
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLabel" name="ograniczenia_label">
+         <widget class="QLabel" name="funkcja_celu_label">
           <property name="text">
-           <string>Ograniczenia:</string>
+           <string>Funkcja celu</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QListWidget" name="lista_ograniczen"/>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QLineEdit" name="ograniczenie"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="dodaj_ograniczenie">
-            <property name="text">
-             <string>Dodaj</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="usun_ograniczenie">
-            <property name="text">
-             <string>Usuń</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Maximum</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>18</width>
-            <height>13</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_3">
-              <item>
-               <widget class="QLabel" name="epsilon0_label">
-                <property name="text">
-                 <string>Episilon0 = 10^</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QSpinBox" name="epsilon0_spinbox">
-                <property name="minimum">
-                 <number>-12</number>
-                </property>
-                <property name="maximum">
-                 <number>-3</number>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_4">
-              <item>
-               <widget class="QLabel" name="epsilon1_label">
-                <property name="text">
-                 <string>Epsilon1 = 10^</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QSpinBox" name="epsilon1_spinbox">
-                <property name="minimum">
-                 <number>-12</number>
-                </property>
-                <property name="maximum">
-                 <number>-3</number>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_5">
-              <item>
-               <widget class="QLabel" name="epsilon2_label">
-                <property name="text">
-                 <string>Epsilon2= 10^</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QSpinBox" name="epsilon2_spinbox">
-                <property name="minimum">
-                 <number>-12</number>
-                </property>
-                <property name="maximum">
-                 <number>-3</number>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_6">
-              <item>
-               <widget class="QLabel" name="l_label">
-                <property name="text">
-                 <string>Max. ilość iteracji</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="l_edit">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="placeholderText">
-                 <string>100</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_7">
-              <item>
-               <widget class="QLabel" name="punkt_startowy_label">
-                <property name="text">
-                 <string>Punkt startowy</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="punk_startowy_edit">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="placeholderText">
-                 <string>0</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="QPushButton" name="oblicz">
-            <property name="text">
-             <string>Oblicz</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         <widget class="QLineEdit" name="funkcj_celu"/>
         </item>
        </layout>
       </item>
       <item>
-       <spacer name="horizontalSpacer">
+       <spacer name="verticalSpacer_2">
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Vertical</enum>
         </property>
         <property name="sizeType">
          <enum>QSizePolicy::Minimum</enum>
@@ -235,49 +42,218 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>18</width>
-          <height>20</height>
+          <height>18</height>
          </size>
         </property>
        </spacer>
       </item>
       <item>
-       <widget class="Wykres" name="wykres" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <widget class="QLabel" name="ograniczenia_label">
+        <property name="text">
+         <string>Ograniczenia:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="QListWidget" name="lista_ograniczen"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>&lt;=0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLineEdit" name="ograniczenie"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="dodaj_ograniczenie">
+          <property name="text">
+           <string>Dodaj</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="usun_ograniczenie">
+          <property name="text">
+           <string>Usuń</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Maximum</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>18</width>
+          <height>13</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="epsilon0_label">
+          <property name="text">
+           <string>Episilon0 = 10^</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="epsilon0_spinbox">
+          <property name="minimum">
+           <number>-12</number>
+          </property>
+          <property name="maximum">
+           <number>-3</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QLabel" name="epsilon1_label">
+          <property name="text">
+           <string>Epsilon1 = 10^</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="epsilon1_spinbox">
+          <property name="minimum">
+           <number>-12</number>
+          </property>
+          <property name="maximum">
+           <number>-3</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLabel" name="epsilon2_label">
+          <property name="text">
+           <string>Epsilon2= 10^</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="epsilon2_spinbox">
+          <property name="minimum">
+           <number>-12</number>
+          </property>
+          <property name="maximum">
+           <number>-3</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="QLabel" name="l_label">
+          <property name="text">
+           <string>Max. ilość iteracji</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="l_edit">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="placeholderText">
+           <string>100</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <widget class="QLabel" name="punkt_startowy_label">
+          <property name="text">
+           <string>Punkt startowy</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="punk_startowy_edit">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="placeholderText">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="oblicz">
+        <property name="text">
+         <string>Oblicz</string>
         </property>
        </widget>
       </item>
      </layout>
     </item>
+    <item>
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Minimum</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>18</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="Wykres" name="wykres" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
    </layout>
-   <zorder>lista_ograniczen</zorder>
-   <zorder>textEdit</zorder>
-   <zorder>label</zorder>
-   <zorder>ograniczenia_label</zorder>
-   <zorder>dodaj_ograniczenie</zorder>
-   <zorder>usun_ograniczenie</zorder>
-   <zorder>ograniczenie</zorder>
-   <zorder>wykres</zorder>
-   <zorder>funkcj_celu</zorder>
-   <zorder>funkcja_celu_label</zorder>
-   <zorder>epsilon0_spinbox</zorder>
-   <zorder>epsilon0_label</zorder>
-   <zorder>epsilon1_label</zorder>
-   <zorder>epsilon2_label</zorder>
-   <zorder>l_label</zorder>
-   <zorder>epsilon1_spinbox</zorder>
-   <zorder>epsilon2_spinbox</zorder>
-   <zorder>l_edit</zorder>
-   <zorder>verticalSpacer</zorder>
-   <zorder>punkt_startowy_label</zorder>
-   <zorder>punk_startowy_edit</zorder>
-   <zorder>horizontalSpacer</zorder>
-   <zorder>wykres</zorder>
    <zorder>verticalSpacer_2</zorder>
-   <zorder>oblicz</zorder>
+   <zorder>label</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

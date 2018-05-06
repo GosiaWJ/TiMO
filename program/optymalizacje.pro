@@ -37,10 +37,12 @@ INCLUDEPATH += . inc inc/qcustomplot
 SOURCES += src/main.cpp \
     src/mainwindow.cpp \
     src/qcustomplot/qcustomplot.cpp \
-    src/wykres.cpp
+    src/wykres.cpp \
+    src/dane.cpp
 
 HEADERS  += inc/qcustomplot/qcustomplot.h \
     inc/mainwindow.hh \
-    inc/wykres.hh
+    inc/wykres.hh \
+    inc/dane.hh
 
 FORMS    += mainwindow.ui
