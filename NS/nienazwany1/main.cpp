@@ -1,3 +1,4 @@
+
 #include <QCoreApplication>
 #include <iostream>
 #include<cmath>
@@ -53,16 +54,17 @@ while(theEnd){
     for (int i=0; i<n; i++) {
         ksi[i]=(-1)*grad[i];
     }
-
-
     for (int i=0; i<n; i++) P=P+grad[i]*ksi[i];
     Ya=F0;
     Pa=P;
     ksi2=0;
     for (int i=0; i<n; i++) ksi2=ksi2+ksi[i]*ksi[i];
     zm_e=1/sqrt(ksi2);
-    while(!(ZW==1 &&MIN_W_KIER)){ //tu sprawdzenie warunku "czy minimum w kierunku ksi?"- tak ozacza wyjście z pętli
-        if(abs(zm_e)<epsilon) break;
+    while(!(ZW==1 && MIN_W_KIER==1)){ //tu sprawdzenie warunku "czy minimum w kierunku ksi?"- tak ozacza wyjście z pętli
+        if(abs(zm_e)<epsilon) {
+            ZW=1; MIN_W_KIER=1;
+            break;
+        }
         for (int i=0; i<n; i++) x[i]=x[i]+zm_e*ksi[i]; //nowy punkt
         F=Function2(x[0],x[1]);
         grad[0]=Derivative_part1(x[0], x[1],h_pochodna);
@@ -70,8 +72,8 @@ while(theEnd){
         P=0;
         for (int i=0; i<n; i++) P=P+grad[i]*ksi[i];
         if(k<200) {
-            cout<<"P<0 "<<P<<endl;
-             cout<<"e= "<<zm_e<<endl;
+          //  cout<<"P<0 "<<P<<endl;
+          //   cout<<"e= "<<zm_e<<endl;
         }
         if (ZW==1) {
             //dodać if który sprawdza czy minimum w kierunku ksi
@@ -118,17 +120,19 @@ while(theEnd){
     ZW=0;
     g2=0;
     for (int i=0; i<n; i++) g2=g2+grad[i]*grad[i];
-
     if(g2<epsilon)    theEnd=0;
     else{
         if(F<F0) F0=F;
         else theEnd=0;
     }
-    cout<<"dokonało się"<<endl;
-    cout<<x[0]<<endl;
-    cout<<x[1]<<endl;
+    cout<<"Punkty posrednie"<<endl;
+    cout<<x[0]<<" "<<x[1]<<endl;
+    cout<<F<<endl;
    }
-}
 
+}
+cout<<"This is the end"<<endl;
+cout<<x[0]<<" "<<x[1]<<endl;
+cout<<F<<endl;
     return a.exec();
 }
