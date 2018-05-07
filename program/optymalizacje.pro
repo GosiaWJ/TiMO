@@ -17,6 +17,7 @@ INCLUDEPATH=inc
 INCLUDEPATH+=ui/inc
 INCLUDEPATH+=.inc
 INCLUDEPATH+=.inc/qcustomplot
+INCLUDEPATH+=.inc/muparser
 INCLUDEPATH+=./ui/inc
 TRANSLATIONS=langs/diagui_en.ts
 MOC_DIR=./out/moc
@@ -38,11 +39,34 @@ SOURCES += src/main.cpp \
     src/mainwindow.cpp \
     src/qcustomplot/qcustomplot.cpp \
     src/wykres.cpp \
-    src/dane.cpp
+    src/dane.cpp \
+    src/muparser/muParser.cpp \
+    src/muparser/muParserBase.cpp \
+    src/muparser/muParserBytecode.cpp \
+    src/muparser/muParserCallback.cpp \
+    src/muparser/muParserDLL.cpp \
+    src/muparser/muParserError.cpp \
+    src/muparser/muParserInt.cpp \
+    src/muparser/muParserTest.cpp \
+    src/muparser/muParserTokenReader.cpp
 
 HEADERS  += inc/qcustomplot/qcustomplot.h \
     inc/mainwindow.hh \
     inc/wykres.hh \
-    inc/dane.hh
+    inc/dane.hh \
+    inc/muparser/muParser.h \
+    inc/muparser/muParserBase.h \
+    inc/muparser/muParserBytecode.h \
+    inc/muparser/muParserCallback.h \
+    inc/muparser/muParserDef.h \
+    inc/muparser/muParserDLL.h \
+    inc/muparser/muParserError.h \
+    inc/muparser/muParserFixes.h \
+    inc/muparser/muParserInt.h \
+    inc/muparser/muParserStack.h \
+    inc/muparser/muParserTemplateMagic.h \
+    inc/muparser/muParserTest.h \
+    inc/muparser/muParserToken.h \
+    inc/muparser/muParserTokenReader.h
 
 FORMS    += mainwindow.ui

@@ -9,7 +9,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    data = new Dane(ui->epsilon0_spinbox->value(),ui->epsilon1_spinbox->value(),ui->epsilon2_spinbox->value(),ui->punk_startowy_edit->text().toDouble(),ui->l_edit->text().toInt(0));
     std::cout<<"123";
 
 }
@@ -23,7 +22,6 @@ MainWindow::~MainWindow()
 void MainWindow::on_dodaj_ograniczenie_clicked()
 {
     ui->lista_ograniczen->addItem(ui->ograniczenie->text());
-
 }
 
 void MainWindow::on_usun_ograniczenie_clicked()
@@ -33,17 +31,29 @@ delete ui->lista_ograniczen->takeItem(ui->lista_ograniczen->currentRow());
 ui->lista_ograniczen->clearSelection();
 }
 
-void MainWindow::on_epsilon0_spinbox_valueChanged(const int arg1)
+void MainWindow::on_epsilon0_spinbox_valueChanged(int arg1)
 {
-data->set_e_0(arg1);
+//data->set_e_0(arg1);
 }
 
 void MainWindow::on_epsilon1_spinbox_valueChanged(int arg1)
 {
-    data->set_e_1(arg1);
+//data->set_e_1(arg1);
 }
 
 void MainWindow::on_epsilon2_spinbox_valueChanged(int arg1)
 {
-    data->set_e_2(arg1);
+//data->set_e_2(arg1);
+}
+
+void MainWindow::on_oblicz_clicked()
+{
+    delete data;
+    data = new Dane(ui->epsilon0_spinbox->value(),ui->epsilon1_spinbox->value(),ui->epsilon2_spinbox->value(),ui->punk_startowy_edit->text().toDouble(),ui->l_edit->text().toInt(0),ui->lista_ograniczen->count(), ui->ilosc_zmiennych_spinbox->value());
+    data->setFunction(ui->funkcja_celu->text());
+    QString tablica_ograniczen[data->ilosc_ograniczen];
+    for(int i=0;i<ui->lista_ograniczen->count();i++){
+        tablica_ograniczen[i]=ui->lista_ograniczen->item(i)->text();
+    }
+    //data->setConstr(tablica_ograniczen);
 }

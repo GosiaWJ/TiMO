@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_9">
+   <layout class="QHBoxLayout" name="horizontalLayout_10">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -27,7 +27,28 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="funkcj_celu"/>
+         <widget class="QLineEdit" name="funkcja_celu"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <widget class="QLabel" name="ilosc_zmiennych_label">
+          <property name="text">
+           <string>Ilość zmiennych</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="ilosc_zmiennych_spinbox">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>5</number>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -99,7 +120,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>18</width>
+          <width>391</width>
           <height>13</height>
          </size>
         </property>
@@ -242,18 +263,37 @@
      </spacer>
     </item>
     <item>
-     <widget class="Wykres" name="wykres" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-     </widget>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="Wykres" name="wykres" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QScrollArea" name="wyniki">
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>391</width>
+           <height>255</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
-   <zorder>verticalSpacer_2</zorder>
-   <zorder>label</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

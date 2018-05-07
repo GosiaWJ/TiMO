@@ -28,6 +28,8 @@ private slots:
 
     void on_epsilon2_spinbox_valueChanged(int arg1);
 
+    void on_oblicz_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
