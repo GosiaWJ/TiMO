@@ -19,6 +19,7 @@ INCLUDEPATH+=ui/inc
 INCLUDEPATH+=.inc
 INCLUDEPATH+=.inc/qcustomplot
 INCLUDEPATH+=.inc/muparser
+INCLUDEPATH+=.inc/diff
 INCLUDEPATH+=./ui/inc
 TRANSLATIONS=langs/diagui_en.ts
 MOC_DIR=./out/moc
@@ -52,7 +53,10 @@ SOURCES += src/main.cpp \
     src/muparser/muParserError.cpp \
     src/muparser/muParserInt.cpp \
     src/muparser/muParserTest.cpp \
-    src/muparser/muParserTokenReader.cpp
+    src/muparser/muParserTokenReader.cpp \
+    inc/diff/expression.cxx \
+    inc/diff/operand.cxx \
+    inc/diff/parser.cxx
 
 HEADERS  += inc/qcustomplot/qcustomplot.h \
     inc/mainwindow.hh \
@@ -71,6 +75,13 @@ HEADERS  += inc/qcustomplot/qcustomplot.h \
     inc/muparser/muParserTemplateMagic.h \
     inc/muparser/muParserTest.h \
     inc/muparser/muParserToken.h \
-    inc/muparser/muParserTokenReader.h
+    inc/muparser/muParserTokenReader.h \
+    inc/diff/auxiliary.h \
+    inc/diff/common.h \
+    inc/diff/exceptions.h \
+    inc/diff/expression.h \
+    inc/diff/operand.h \
+    inc/diff/parser.h \
+    inc/diff/tree.h
 
 FORMS    += mainwindow.ui

@@ -1,7 +1,7 @@
 #include "inc/mainwindow.hh"
 #include "ui_mainwindow.h"
 #include<iostream>
-
+using namespace std;
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->x_40->setVisible(false);
     ui->x_50->setVisible(false);
     connect(ui->ilosc_zmiennych_spinbox,SIGNAL(valueChanged(int)),this,SLOT(zmien_ilosc_zmiennych(int)));
+    ui->funkcja_celu_box->addItem("x1^2+2*x2^2-2*x1*x2");
 
 }
 
@@ -63,11 +64,16 @@ void MainWindow::on_oblicz_clicked()
     data = new Dane(ui->epsilon0_spinbox->value(),ui->epsilon1_spinbox->value(),ui->epsilon2_spinbox->value(),punkt_startowy,ui->l_edit->text().toInt(0),ui->lista_ograniczen->count(), ui->ilosc_zmiennych_spinbox->value());
     data->setFunction(ui->funkcja_celu_box->currentText());
     ui->funkcja_celu_box->addItem(ui->funkcja_celu_box->currentText());
-   QString tablica_ograniczen[data->ilosc_ograniczen];
-    for(int i=0;i<ui->lista_ograniczen->count();i++){
+   QString *tablica_ograniczen=new QString[data->ilosc_ograniczen];
+    cout<<"ilosc ograniczen "<<ui->lista_ograniczen->count()<<endl;
+   if(ui->lista_ograniczen->count()){
+        for(int i=0;i<ui->lista_ograniczen->count();i++){
         tablica_ograniczen[i]=ui->lista_ograniczen->item(i)->text();
     }
    data->setConstr(tablica_ograniczen);
+   }
+   else{} //co jak nie ma ograniczeń
+   data->Optimalize();
 }
 
 

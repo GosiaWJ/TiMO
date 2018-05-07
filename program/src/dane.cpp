@@ -1,6 +1,8 @@
 #include "dane.hh"
 #include<cmath>
 using namespace mu;
+#include<iostream>
+using namespace std;
 
 
 Dane::Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne)
@@ -17,11 +19,41 @@ Dane::Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne)
 
 }
 
+double *Dane::Gradient()
+{
+    double *gradient=new double[ilosc_zmiennych];
+    expr_parser.SetVariableID("x1", 0);
+    expr_parser.SetVariableID("x2", 1);
+    expr_parser.SetVariableID("x3", 2);
+    expr_parser.SetVariableID("x4", 3);
+    expr_parser.SetVariableID("x5", 4);
+    int nerr = 0;
+    Ev3::Expression expr = expr_parser.Parse(funkcja_celu->toStdString().c_str(),nerr);
+    Ev3::Expression derivative[ilosc_zmiennych];
+    for(int i=0;i<ilosc_zmiennych;i++){
+           derivative[i]= Ev3::Diff(expr, i); //tu się liczą pochodne
+          // std::cout <<"x"<<i<<" "<< derivative[i]->ToString() << std::endl;
+           parser.SetExpr(derivative[i]->ToString());
+           gradient[i]=parser.Eval();
+           cout<<"tu";
+
+
+    }
+cout<<"tu";
+return gradient;
+}
+
 double Dane::Optimalize()
 {
+
     double wartosc_funkcji_celu=1000000000;
+    variables=punkt_startowy; //koniecznie przed wywołaniem gradientu musisz ustawić variables tak jak chcesz
+    double *g=Gradient();
+    cout<<"tu";
+    for(int i=0;i<ilosc_zmiennych;i++)   std::cout <<"x"<<i<<" "<< g[i] << std::endl;
 
 
+cout<<ograniczenia[0].toStdString()<<endl;
     return wartosc_funkcji_celu;
 }
 
@@ -32,14 +64,15 @@ double Dane::Function(double x1, double x2)
 
 void Dane::setFunction(const QString fun)
 {
-    funkcja_celu=fun;
+    funkcja_celu=new QString(fun);
+    cout<<"funkcja celu: "<<funkcja_celu->toStdString()<<endl;
     parser.DefineVar("x1", &variables[0]);
     parser.DefineVar("x2", &variables[1]);
     parser.DefineVar("x3", &variables[2]);
     parser.DefineVar("x4", &variables[3]);
     parser.DefineVar("x5", &variables[4]);
     parser.SetExpr(fun.toStdString());
-    parser.Eval();
+  //  parser.Eval();
 }
 
 void Dane::setConstr(QString *Constr_tab)

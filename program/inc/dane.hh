@@ -3,12 +3,17 @@
 #include<iostream>
 #include<muParser.h>
 #include<QString>
+#include <iostream>
+#include "inc/diff/expression.h"
+#include "inc/diff/parser.h"
 
 class Dane
 {
 mu::Parser parser;
 QString *funkcja_celu;
 QString *ograniczenia;
+Ev3::ExpressionParser expr_parser;
+
 
 public:
     int epsilon0;
@@ -25,6 +30,7 @@ public:
     void set_e_2(const int e2){epsilon2=e2;}
     void set_p_s(double* x0){punkt_startowy=x0;}
     void set_l_i(const int l){liczba_iteracji=l;}
+    double* Gradient();
     double Optimalize();
     double Function(double x1, double x2);
     void setFunction(const QString);
