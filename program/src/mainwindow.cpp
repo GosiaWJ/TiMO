@@ -65,12 +65,12 @@ void MainWindow::on_oblicz_clicked()
     data->setFunction(ui->funkcja_celu_box->currentText());
     ui->funkcja_celu_box->addItem(ui->funkcja_celu_box->currentText());
    QString *tablica_ograniczen=new QString[data->ilosc_ograniczen];
-    cout<<"ilosc ograniczen "<<ui->lista_ograniczen->count()<<endl;
    if(ui->lista_ograniczen->count()){
         for(int i=0;i<ui->lista_ograniczen->count();i++){
-        tablica_ograniczen[i]=ui->lista_ograniczen->item(i)->text();
+        tablica_ograniczen[i]=QString(ui->lista_ograniczen->item(i)->text());
     }
    data->setConstr(tablica_ograniczen);
+   delete [] tablica_ograniczen;
    }
    else{} //co jak nie ma ograniczeń
    data->Optimalize();
