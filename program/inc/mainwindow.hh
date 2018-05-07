@@ -30,6 +30,8 @@ private slots:
 
     void on_oblicz_clicked();
 
+    void zmien_ilosc_zmiennych(int arg1);
+
 private:
     Ui::MainWindow *ui;
 };
