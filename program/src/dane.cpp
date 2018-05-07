@@ -7,7 +7,7 @@ using namespace std;
 
 Dane::Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne)
 {
-    epsilon0=e0;
+        epsilon0=e0;
     epsilon1=e1;
     epsilon2=e2;
     punkt_startowy=x0;
@@ -16,6 +16,7 @@ Dane::Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne)
     ilosc_ograniczen=ogr;
     variables=new double[ilosc_zmiennych];
     ograniczenia=new QString[ilosc_ograniczen];
+
 
 }
 
@@ -35,25 +36,20 @@ double *Dane::Gradient()
           // std::cout <<"x"<<i<<" "<< derivative[i]->ToString() << std::endl;
            parser.SetExpr(derivative[i]->ToString());
            gradient[i]=parser.Eval();
-           cout<<"tu";
-
 
     }
-cout<<"tu";
 return gradient;
 }
 
 double Dane::Optimalize()
 {
-
+    cout<<"ilosc ograniczen"<<ilosc_ograniczen<<endl;
     double wartosc_funkcji_celu=1000000000;
     variables=punkt_startowy; //koniecznie przed wywołaniem gradientu musisz ustawić variables tak jak chcesz
     double *g=Gradient();
-    cout<<"tu";
-    for(int i=0;i<ilosc_zmiennych;i++)   std::cout <<"x"<<i<<" "<< g[i] << std::endl;
+    for(int i=0;i<ilosc_zmiennych;i++)   std::cout <<"x"<<i<<" "<< punkt_startowy[i] << std::endl;
 
 
-cout<<ograniczenia[0].toStdString()<<endl;
     return wartosc_funkcji_celu;
 }
 
@@ -77,7 +73,7 @@ void Dane::setFunction(const QString fun)
 
 void Dane::setConstr(QString *Constr_tab)
 {
-    for(int i=0; i<Constr_tab->size();i++) {
-        ograniczenia[i]=Constr_tab[i];
+    for(int i=0;i<ilosc_ograniczen;i++){
+    ograniczenia[i]=QString(Constr_tab[i]);
     }
 }

@@ -6,12 +6,13 @@
 #include <iostream>
 #include "inc/diff/expression.h"
 #include "inc/diff/parser.h"
+#include<QVector>
 
 class Dane
 {
 mu::Parser parser;
 QString *funkcja_celu;
-QString *ograniczenia;
+
 Ev3::ExpressionParser expr_parser;
 
 
@@ -24,6 +25,7 @@ public:
     int ilosc_ograniczen;
     double *punkt_startowy;
     double *variables;
+    QString *ograniczenia;
     Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne);
     void set_e_0(const int e0){epsilon0=e0;}
     void set_e_1(const int e1){epsilon1=e1;}
