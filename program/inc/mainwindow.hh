@@ -2,7 +2,6 @@
 #define MAINWINDOW_HH
 
 #include <QMainWindow>
-#include "muParser.h"
 #include"dane.hh"
 
 namespace Ui {
