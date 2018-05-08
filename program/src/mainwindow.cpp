@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->x_40->setVisible(false);
     ui->x_50->setVisible(false);
     connect(ui->ilosc_zmiennych_spinbox,SIGNAL(valueChanged(int)),this,SLOT(zmien_ilosc_zmiennych(int)));
-    ui->funkcja_celu_box->addItem("x1^2+2*x2^2-2*x1*x2");
+    ui->funkcja_celu_box->addItem("x1^2+2*x2^2-6*x1+x1*x2");
 
 }
 

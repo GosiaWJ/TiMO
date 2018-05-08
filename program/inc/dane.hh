@@ -34,6 +34,7 @@ public:
     void set_l_i(const int l){liczba_iteracji=l;}
     double* Gradient();
     double Optimalize();
+    double *NS();
     double Function(double x1, double x2);
     void setFunction(const QString);
     void setConstr(QString *Constr_tab);
