@@ -48,7 +48,7 @@ return gradient;
 double Dane::Optimalize()
 {
 
-    cout<<"ilosc ograniczen"<<ilosc_zmiennych<<endl;
+    //cout<<"ilosc ograniczen"<<ilosc_zmiennych<<endl;
     double wartosc_funkcji_celu=1000000000;
     variables=punkt_startowy; //koniecznie przed wywołaniem gradientu musisz ustawić variables tak jak chcesz
   //  double *g=Gradient();
@@ -59,43 +59,47 @@ double Dane::Optimalize()
     parser.DefineVar("x5", &variables[4]);
     NS();
 
-   for(int i=0;i<ilosc_zmiennych;i++)   std::cout <<"start x"<<i<<" "<< variables[i] << std::endl;
+   for(int i=0;i<ilosc_zmiennych;i++)   std::cout <<"koniec x"<<i<<" "<< variables[i] << std::endl;
     return wartosc_funkcji_celu;
 }
 
 double *Dane::NS()
 {
-    for(int i=0;i<ilosc_zmiennych;i++)   std::cout <<"startowy"<<i<<" "<< variables[i] << std::endl;
+   // for(int i=0;i<ilosc_zmiennych;i++)   std::cout <<"startowy"<<i<<" "<< variables[i] << std::endl;
 
     int n=ilosc_zmiennych; //l. zmiennych
+    double g2=10;
+    double epsilon=pow(10,-4);
+
+    while(abs(g2)>epsilon){
+
     double *grad=Gradient();
-    for(int i=0;i<ilosc_zmiennych;i++)   std::cout <<"g"<<i<<" "<< grad[i] << std::endl;
     double ksi[n];
     double P=0;
     double ksi2=0;
-    double epsilon=pow(10,-3);
     double tau_l=0;
-    double tau_r=9;
-    double tau, f,f0,g2;
-    double beta=0.2;
+    double tau_r=1;
+    double tau, f,f0;
+    double beta=0.25;
     bool the_end=1;
+    double var[n];
+    for (int i=0; i<n; i++) var[i]=variables[i];
+
 
 
     parser.SetExpr(funkcja_celu->toStdString());
     f0=parser.Eval();
-    cout<<"f "<<f0<<endl;
-    ksi[0]=1;
-    ksi[1]=0;
-   // for (int i=0; i<n; i++) ksi[i]=(-1)*grad[i]; //wyznaczenie kierunku
+  //  cout<<"f "<<f0<<endl;
+    for (int i=0; i<n; i++) ksi[i]=(-1)*grad[i]; //wyznaczenie kierunku
     for (int i=0; i<n; i++) P=P+grad[i]*ksi[i]; //pochodna kierunkowa
-cout <<"p"<<" "<< P << std::endl;
+//cout <<"p"<<" "<< P << std::endl;
     while(the_end){
         tau=0.5*(tau_l+tau_r);
-        cout <<"tau"<<" "<< tau<< std::endl;
+        //cout <<"tau"<<" "<< tau<< std::endl;
 
-        for (int i=0; i<n; i++) variables[i]=variables[i]+tau*ksi[i];
+        for (int i=0; i<n; i++) variables[i]=var[i]+tau*ksi[i];
         f=parser.Eval();
-        cout <<"fe"<<" "<< f << std::endl;
+       // cout <<"fe"<<" "<< f0+(beta)*P*tau<< std::endl;
 
         if(f<f0+(1-beta)*P*tau){
         tau_l=tau;
@@ -107,7 +111,12 @@ cout <<"p"<<" "<< P << std::endl;
         }
 
     }
-    for (int i=0; i<n; i++) cout<<"var" <<tau<<endl;
+    for (int i=0; i<n; i++) variables[i]=var[i]+tau*ksi[i];
+    g2=0;
+    for (int i=0; i<n; i++) g2=g2+grad[i]*grad[i];
+    //cout <<"g2"<<" "<< g2 << std::endl;
+
+}
 
     return variables;
 }

@@ -7,7 +7,8 @@
 QT       += core gui widgets
 
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets \
+                                        printsupport
 
 TARGET = optymalizacje
 TEMPLATE = app
@@ -33,8 +34,11 @@ DEPENDPATH += ui \
               inc/qcustomplot \
               inc \
               src/qcustomplot \
+              inc/muparser \
+              src/muparser
 
-INCLUDEPATH += . inc inc/qcustomplot
+INCLUDEPATH += . inc inc/qcustomplot \
+               . inc inc/muparser
 
 SOURCES += src/main.cpp \
     src/mainwindow.cpp \
