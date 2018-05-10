@@ -15,7 +15,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->x_40->setVisible(false);
     ui->x_50->setVisible(false);
     connect(ui->ilosc_zmiennych_spinbox,SIGNAL(valueChanged(int)),this,SLOT(zmien_ilosc_zmiennych(int)));
+   // connect(data,SIGNAL(iteracja(int)),this,SLOT(dodaj_wynik(int)));
     ui->funkcja_celu_box->addItem("2*x1^2+x2^2-2*x1*x2");
+    ui->funkcja_celu_box->addItem("x1^4+x2^4-2*x1^2*x2-4*x1+3");
+
+
+
 
 }
 
@@ -35,6 +40,7 @@ void MainWindow::on_usun_ograniczenie_clicked()
 ui->ograniczenie->setText(ui->lista_ograniczen->currentItem()->text());
 delete ui->lista_ograniczen->takeItem(ui->lista_ograniczen->currentRow());
 ui->lista_ograniczen->clearSelection();
+
 }
 
 void MainWindow::on_epsilon0_spinbox_valueChanged(int arg1)
@@ -54,6 +60,7 @@ void MainWindow::on_epsilon2_spinbox_valueChanged(int arg1)
 
 void MainWindow::on_oblicz_clicked()
 {
+
     double *punkt_startowy;
     punkt_startowy=new double[ui->ilosc_zmiennych_spinbox->value()]; //odczytywaie punktu startowego
     punkt_startowy[0]=ui->x_10->text().toDouble();
@@ -64,16 +71,16 @@ void MainWindow::on_oblicz_clicked()
     data = new Dane(ui->epsilon0_spinbox->value(),ui->epsilon1_spinbox->value(),ui->epsilon2_spinbox->value(),punkt_startowy,ui->l_edit->text().toInt(0),ui->lista_ograniczen->count(), ui->ilosc_zmiennych_spinbox->value());
     data->setFunction(ui->funkcja_celu_box->currentText());
     ui->funkcja_celu_box->addItem(ui->funkcja_celu_box->currentText());
-   QString *tablica_ograniczen=new QString[data->ilosc_ograniczen];
-   if(ui->lista_ograniczen->count()){
+    QString *tablica_ograniczen=new QString[data->ilosc_ograniczen];
+    if(ui->lista_ograniczen->count()){
         for(int i=0;i<ui->lista_ograniczen->count();i++){
         tablica_ograniczen[i]=QString(ui->lista_ograniczen->item(i)->text());
     }
-   data->setConstr(tablica_ograniczen);
-   delete [] tablica_ograniczen;
-   }
-   else{} //co jak nie ma ograniczeń
-   data->Optimalize();
+    data->setConstr(tablica_ograniczen);
+    delete [] tablica_ograniczen;
+     }
+    else{} //co jak nie ma ograniczeń
+    data->Optimalize();
 }
 
 
@@ -111,4 +118,12 @@ void MainWindow::zmien_ilosc_zmiennych(int arg1)
     ui->x_40->setVisible(true);
     ui->x_50->setVisible(true);
     }
+}
+
+void MainWindow::dodaj_wynik(int k)
+{
+    string wiadomosc;
+    wiadomosc="Iteracja "+to_string(k)+" ";
+    for(int i=0;i<data->ilosc_zmiennych;i++) wiadomosc+="x"+to_string(i)+" ="+to_string(data->variables[i])+ " ";
+    ui->wyniki->addItem(wiadomosc.c_str());
 }

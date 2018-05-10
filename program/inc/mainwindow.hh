@@ -32,6 +32,8 @@ private slots:
 
     void zmien_ilosc_zmiennych(int arg1);
 
+    void dodaj_wynik(int k);
+
 private:
     Ui::MainWindow *ui;
 };

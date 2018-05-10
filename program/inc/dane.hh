@@ -1,18 +1,19 @@
 #ifndef DANE_HH
 #define DANE_HH
-#include<iostream>
-#include<muParser.h>
-#include<QString>
+#include <muParser.h>
+#include <QString>
 #include <iostream>
+#include <string>
 #include "inc/diff/expression.h"
 #include "inc/diff/parser.h"
-#include<QVector>
+#include <QVector>
 
+using namespace std;
+#include<QObject>
 class Dane
 {
 mu::Parser parser;
 QString *funkcja_celu;
-
 Ev3::ExpressionParser expr_parser;
 
 
@@ -32,12 +33,20 @@ public:
     void set_e_2(const int e2){epsilon2=e2;}
     void set_p_s(double* x0){punkt_startowy=x0;}
     void set_l_i(const int l){liczba_iteracji=l;}
-    double* Gradient();
+    double* Gradient(const string& fun);
     double Optimalize();
-    double *NS();
+    double *NS(const string& fun);
+    double *Powell();
+    int H(double x){
+        if(x>0) return 1;
+        else return 0;
+    }
     double Function(double x1, double x2);
     void setFunction(const QString);
     void setConstr(QString *Constr_tab);
+    ~Dane();
+signals:
+    //void iteracja(int k);
 
 };
 

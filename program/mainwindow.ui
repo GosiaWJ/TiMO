@@ -360,48 +360,21 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="Wykres" name="wykres" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QScrollArea" name="wyniki">
-          <property name="widgetResizable">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="scrollAreaWidgetContents">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>432</width>
-             <height>257</height>
-            </rect>
-           </property>
-          </widget>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Wykres" name="wykres" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="funkcja_celu"/>
+       <widget class="QListWidget" name="wyniki"/>
       </item>
      </layout>
     </item>
    </layout>
-   <zorder>x_20</zorder>
-   <zorder>x_30</zorder>
-   <zorder>x_40</zorder>
-   <zorder>x_50</zorder>
-   <zorder>funkcja_celu_box</zorder>
-   <zorder>wyniki</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
