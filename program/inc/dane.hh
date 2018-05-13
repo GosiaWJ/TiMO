@@ -34,7 +34,7 @@ public:
     void set_p_s(double* x0){punkt_startowy=x0;}
     void set_l_i(const int l){liczba_iteracji=l;}
     double* Gradient(const string& fun);
-    double Optimalize();
+    void Optimalize();
     double *NS(const string& fun);
     double *Powell();
     int H(double x){

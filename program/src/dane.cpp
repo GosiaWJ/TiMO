@@ -58,11 +58,12 @@ double *Dane::Gradient(const string& fun)
 
 
 
-double Dane::Optimalize()
+void Dane::Optimalize()
 {
+    try{
 
     //cout<<"ilosc ograniczen"<<ilosc_zmiennych<<endl;
-    double wartosc_funkcji_celu=1000000000;
+
     variables=punkt_startowy; //koniecznie przed wywołaniem gradientu musisz ustawić variables tak jak chcesz
   //  double *g=Gradient();
     parser.DefineVar("x1", &variables[0]);
@@ -73,7 +74,11 @@ double Dane::Optimalize()
     Powell();
 
      for(int i=0;i<ilosc_zmiennych;i++)   std::cout <<"koniec x"<<i<<" "<< variables[i] << std::endl;
-return wartosc_funkcji_celu;
+    }
+     catch(mu::Parser::exception_type &e){
+        cout<<"BŁĄD PARSERA" <<endl;
+     }
+
 }
 
 double *Dane::NS(const string& fun)
