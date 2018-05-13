@@ -85,6 +85,7 @@ void MainWindow::on_oblicz_clicked()
         tablica_ograniczen[i]=QString(ui->lista_ograniczen->item(i)->text());
     }
     data->setConstr(tablica_ograniczen);
+    ui->wykres->setConstr(tablica_ograniczen,ui->lista_ograniczen->count());
     delete [] tablica_ograniczen;
      }
     else{} //co jak nie ma ograniczeń

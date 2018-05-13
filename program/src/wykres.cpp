@@ -12,13 +12,39 @@ using namespace std;
 Wykres::Wykres(QWidget *parent): QCustomPlot(parent)
 {
    colorMap = new QCPColorMap(this->xAxis, this->yAxis);
-    this->addGraph(this->xAxis, this->yAxis);
+   constrainsMap=new QCPColorMap(this->xAxis, this->yAxis);
+   QCPColorGradient Gradient1;
+   Gradient1.clearColorStops();
+   Gradient1.setColorStopAt(0, QColor(0,0,0,40));
+   Gradient1.setColorStopAt(1, QColor(0,0,0,00));
+   Gradient1.setLevelCount(2);
+   constrainsMap->setGradient(Gradient1);
+
+   this->addGraph(this->xAxis, this->yAxis);
    this->graph(0)->setPen(QPen(QColor(255, 100, 0)));
    this->graph(0)->setBrush(QBrush(QPixmap("./balboa.jpg"))); // fill with texture of specified image
    this->graph(0)->setLineStyle(QCPGraph::lsLine);
    this->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
 
+   QCPColorScale *colorScale = new QCPColorScale(this);
+   if(this->plotLayout()->hasElement(0,1)) this->plotLayout()->remove(this->plotLayout()->element(0,1));
+   this->plotLayout()->addElement(0, 1, colorScale); // add it to the right of the main axis rect
+   colorScale->setType(QCPAxis::atRight); // scale shall be vertical bar with tick/axis labels right (actually atRight is already the default)
+   colorMap->setColorScale(colorScale); // associate the color map with the color scale
+   colorScale->axis()->setLabel("Wartosc funkcji");
 
+   // set the color gradient of the color map to one of the presets:
+   colorMap->setGradient(QCPColorGradient::gpHues);
+   // we could have also created a QCPColorGradient instance and added own colors to
+   // the gradient, see the documentation of QCPColorGradient for what's possible.
+
+   // rescale the data dimension (color) such that all data points lie in the span visualized by the color gradient:
+
+   // make sure the axis rect and color scale synchronize their bottom and top margins (so they line up):
+   QCPMarginGroup *marginGroup = new QCPMarginGroup(this);
+   this->axisRect()->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
+   colorScale->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
+  // this->rescaleAxes();
 }
 /*!
  * \brief Wykres::plot - rysuje dane na wykresie
@@ -48,6 +74,7 @@ void Wykres::plot(double *p_s, double *wynik, QVector<double> x_1, QVector<doubl
     int ny = 200;
     colorMap->data()->setSize(nx, ny); // we want the color map to have nx * ny data points
     colorMap->data()->setRange(QCPRange(x_l, x_p), QCPRange(y_d, y_g)); // and span the coordinate range -4..4 in both key (x) and value (y) dimensions
+
     // now we assign some data, by accessing the QCPColorMapData instance of the color map:
     double x, y, z;
     parser.DefineVar("x1", &x);
@@ -62,37 +89,39 @@ void Wykres::plot(double *p_s, double *wynik, QVector<double> x_1, QVector<doubl
         colorMap->data()->setCell(xIndex, yIndex, z);
       }
     }
-
-    // add a color scale:
-    QCPColorScale *colorScale = new QCPColorScale(this);
-    if(this->plotLayout()->hasElement(0,1)) this->plotLayout()->remove(this->plotLayout()->element(0,1));
-    this->plotLayout()->addElement(0, 1, colorScale); // add it to the right of the main axis rect
-    colorScale->setType(QCPAxis::atRight); // scale shall be vertical bar with tick/axis labels right (actually atRight is already the default)
-    colorMap->setColorScale(colorScale); // associate the color map with the color scale
-    colorScale->axis()->setLabel("Wartosc funkcji");
-
-    // set the color gradient of the color map to one of the presets:
-    colorMap->setGradient(QCPColorGradient::gpPolar);
-    // we could have also created a QCPColorGradient instance and added own colors to
-    // the gradient, see the documentation of QCPColorGradient for what's possible.
-
-    // rescale the data dimension (color) such that all data points lie in the span visualized by the color gradient:
     colorMap->rescaleDataRange();
+    constrainsMap->data()->fillAlpha(10);
+    constrainsMap->data()->setSize(nx, ny); // we want the color map to have nx * ny data points
+    constrainsMap->data()->setRange(QCPRange(x_l, x_p), QCPRange(y_d, y_g)); // and span the coordinate range -4..4 in both key (x) and value (y) dimensions
 
-    // make sure the axis rect and color scale synchronize their bottom and top margins (so they line up):
-    QCPMarginGroup *marginGroup = new QCPMarginGroup(this);
-    this->axisRect()->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
-    colorScale->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
-   // this->rescaleAxes();
 
+    for (int xIndex=0; xIndex<nx; ++xIndex)
+    {
+      for (int yIndex=0; yIndex<ny; ++yIndex)
+      {
+        int ogr=0;
+        for(int i=0;i<ilosc_ograniczen;i++) {
+            parser.SetExpr(ograniczenia[i].toStdString());
+            double wartosc=parser.Eval();
+            if(wartosc<=0) ogr+=1;
+        }
+        constrainsMap->data()->cellToCoord(xIndex, yIndex, &x, &y);
+        if(ogr==0) z=1;
+        else z=0;
+        constrainsMap->data()->setCell(xIndex, yIndex, z);
+      }
+    }
+    constrainsMap->rescaleDataRange();
+
+    this->rescaleAxes();
    /* for (int i=0; i<x_2.size(); i++) {
     cout<<"wy_x"<<i<<"="<<x_1.at(i)<<" "<<x_2.at(i)<<" "<<endl;
     }
     cout<<endl;*/
     //plotting points
 
-    this->graph(0)->clearData();
-    this->graph(0)->addData(x_1,x_2);
+    this->graph(0)->setData(x_1,x_2);
+
 
     this->replot();
     this->update();
@@ -102,4 +131,12 @@ void Wykres::setFunction(const QString fun)
 {
     funkcja_celu=new QString(fun);
 
+}
+void Wykres::setConstr(QString *Constr_tab, int ilosc)
+{
+    ilosc_ograniczen=ilosc;
+    ograniczenia=new QString[ilosc];
+    for(int i=0;i<ilosc;i++){
+    ograniczenia[i]=QString(Constr_tab[i]);
+    }
 }

@@ -16,10 +16,16 @@ class Wykres:public QCustomPlot
     Q_OBJECT
     QString *funkcja_celu;
     QCPColorMap *colorMap;
+    QCPColorMap *constrainsMap;
+    QString *ograniczenia;
+    int ilosc_ograniczen;
+
+
 public:
     Wykres(QWidget *parent);
 
     void setFunction(const QString fun);
+    void setConstr(QString *Constr_tab, int ilosc);
 public slots:
     void plot(double *p_s, double *wynik, QVector<double> x_1, QVector<double> x_2);
 
