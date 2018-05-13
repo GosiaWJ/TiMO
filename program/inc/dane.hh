@@ -26,6 +26,7 @@ public:
     int ilosc_ograniczen;
     double *punkt_startowy;
     double *variables;
+    QVector<double> *punkty_powella;
     QString *ograniczenia;
     Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne);
     void set_e_0(const int e0){epsilon0=e0;}
@@ -36,7 +37,11 @@ public:
     double* Gradient(const string& fun);
     void Optimalize();
     double *NS(const string& fun);
-    double *Powell();
+    void Powell();
+    void clear_powell_points(){
+        for(int i=0;i<ilosc_zmiennych;i++) punkty_powella[i].clear();
+    }
+
     int H(double x){
         if(x>0) return 1;
         else return 0;

@@ -61,8 +61,9 @@ void MainWindow::on_epsilon2_spinbox_valueChanged(int arg1)
 void MainWindow::on_oblicz_clicked()
 {
 
+    double start[2];
+    double wynik[2];
     double p_s[5];
-    int n=ui->ilosc_zmiennych_spinbox->value();
    // p_s=new double[n]; //odczytywaie punktu startowego
     p_s[0]=ui->x_10->text().toDouble();
     p_s[1]=ui->x_20->text().toDouble();
@@ -70,12 +71,16 @@ void MainWindow::on_oblicz_clicked()
     p_s[3]=ui->x_40->text().toDouble();
     p_s[4]=ui->x_50->text().toDouble();
 
+    if(ui->ilosc_zmiennych_spinbox->value()==2){
+        for(int i=0;i<2;i++) start[i]=p_s[i];
+    }
+
+    //delete data;
     data = new Dane(ui->epsilon0_spinbox->value(),ui->epsilon1_spinbox->value(),ui->epsilon2_spinbox->value(),p_s,ui->l_edit->text().toInt(0),ui->lista_ograniczen->count(), ui->ilosc_zmiennych_spinbox->value());
     data->setFunction(ui->funkcja_celu_box->currentText());
     ui->funkcja_celu_box->addItem(ui->funkcja_celu_box->currentText());
     QString *tablica_ograniczen=new QString[data->ilosc_ograniczen];
     if(ui->lista_ograniczen->count()){
-        cout<<"ilosc_ograniczen"<<ui->lista_ograniczen->count()<<endl;
         for(int i=0;i<ui->lista_ograniczen->count();i++){
         tablica_ograniczen[i]=QString(ui->lista_ograniczen->item(i)->text());
     }
@@ -83,8 +88,16 @@ void MainWindow::on_oblicz_clicked()
     delete [] tablica_ograniczen;
      }
     else{} //co jak nie ma ograniczeń
+    //
     data->Optimalize();
-  //  delete [] p_s;
+
+    ui->wykres->setFunction(ui->funkcja_celu_box->currentText());
+    if(ui->ilosc_zmiennych_spinbox->value()==2){
+        for(int i=0;i<2;i++) wynik[i]=data->variables[i];
+        ui->wykres->plot(start,wynik,data->punkty_powella[0],data->punkty_powella[1]);
+    }
+
+    data->clear_powell_points();
 
 }
 

@@ -6,6 +6,7 @@ using namespace mu;
 #include<math.h>
 #include<locale.h>
 
+
 using namespace std;
 
 
@@ -16,9 +17,9 @@ Dane::Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne)
     epsilon2=e2;
     punkt_startowy=new double[zmienne];
     punkt_startowy=x0;
-    for (int i=0; i<zmienne; i++) cout<<"x"<<i<<" "<<punkt_startowy[i]<<endl;
     liczba_iteracji=l;
     ilosc_zmiennych=zmienne; //zmienić to potem
+    punkty_powella=new QVector<double>[ilosc_zmiennych];
     ilosc_ograniczen=ogr;
     variables=new double[5];
     for (int i=0; i<zmienne; i++) variables[i]=0;
@@ -34,6 +35,8 @@ Dane::~Dane()
     delete [] variables;
     delete [] ograniczenia;
     delete funkcja_celu;
+    for(int i=0;i<ilosc_zmiennych;i++) punkty_powella[i].clear();
+    delete [] punkty_powella;
 }
 
 double *Dane::Gradient(const string& fun)
@@ -62,7 +65,6 @@ void Dane::Optimalize()
 {
     try{
 
-    //cout<<"ilosc ograniczen"<<ilosc_zmiennych<<endl;
 
     variables=punkt_startowy; //koniecznie przed wywołaniem gradientu musisz ustawić variables tak jak chcesz
   //  double *g=Gradient();
@@ -73,7 +75,6 @@ void Dane::Optimalize()
     parser.DefineVar("x5", &variables[4]);
     Powell();
 
-     for(int i=0;i<ilosc_zmiennych;i++)   std::cout <<"koniec x"<<i<<" "<< variables[i] << std::endl;
     }
      catch(mu::Parser::exception_type &e){
         cout<<"BŁĄD PARSERA" <<endl;
@@ -105,17 +106,13 @@ double *Dane::NS(const string& fun)
 
      parser.SetExpr(fun);
      f0=parser.Eval();
-   //  cout<<"f "<<f0<<endl;
      for (int i=0; i<n; i++) ksi[i]=(-1)*grad[i]; //wyznaczenie kierunku
      for (int i=0; i<n; i++) P=P+grad[i]*ksi[i]; //pochodna kierunkowa
- //cout <<"p"<<" "<< P << std::endl;
      while(the_end){
          tau=0.5*(tau_l+tau_r);
-         //cout <<"tau"<<" "<< tau<< std::endl;
 
          for (int i=0; i<n; i++) variables[i]=var[i]+tau*ksi[i];
          f=parser.Eval();
-        // cout <<"fe"<<" "<< f0+(beta)*P*tau<< std::endl;
 
          if(f<f0+(1-beta)*P*tau){
          tau_l=tau;
@@ -130,14 +127,13 @@ double *Dane::NS(const string& fun)
      for (int i=0; i<n; i++) variables[i]=var[i]+tau*ksi[i];
      g2=0;
      for (int i=0; i<n; i++) g2=g2+grad[i]*grad[i];
-     //cout <<"g2"<<" "<< g2 << std::endl;
 
  }
 
  return variables;
 }
 
-double *Dane::Powell()
+void Dane::Powell()
 {
     double sigma[ilosc_ograniczen];
     double theta[ilosc_ograniczen];
@@ -166,20 +162,24 @@ double *Dane::Powell()
         funkcja_powella=funkcja_celu->toStdString();
 
         for (int i=0; i<ilosc_ograniczen; i++) {
-            cout<<i<<endl;
 
             if(H(g0[i]+theta[i])){
                 string s=to_string(sigma[i]);
                 string t=to_string(theta[i]);
                 funkcja_powella+="+"+s+"*("+ograniczenia[i].toStdString()+"+"+t+")^2";
-                cout<<"Dodano"<<endl;
             }
         }
         parser.SetExpr(funkcja_powella);
-        cout<<"Funkcja Powella "<<funkcja_powella<<"Wartość" <<parser.Eval()<<endl;
+        //cout<<"Funkcja Powella "<<funkcja_powella<<"Wartość" <<parser.Eval()<<endl;
+        for (int i=0; i<ilosc_zmiennych; i++) {punkty_powella[i].append(variables[i]);
+        cout<<"x"<<i<<"="<<variables[i]<<" ";
+        }
+        cout<<endl;
+
         QString *funkcja;
         funkcja->fromStdString(funkcja_powella);
         NS(funkcja_powella);
+
         c0=c;
         c=0;
         for (int i=0; i<ilosc_ograniczen; i++) {
@@ -231,19 +231,21 @@ double *Dane::Powell()
         }
 
     }
+    for (int i=0; i<ilosc_zmiennych; i++) {
+     // cout<<"powell"<<punkty_powella[i].at(0)<<" ";
+    }
 }
 
 
 void Dane::setFunction(const QString fun)
 {
     funkcja_celu=new QString(fun);
-    cout<<"funkcja celu: "<<funkcja_celu->toStdString()<<endl;
-    parser.DefineVar("x1", &variables[0]);
+/*    parser.DefineVar("x1", &variables[0]);
     parser.DefineVar("x2", &variables[1]);
     parser.DefineVar("x3", &variables[2]);
     parser.DefineVar("x4", &variables[3]);
     parser.DefineVar("x5", &variables[4]);
-    parser.SetExpr(fun.toStdString());
+    parser.SetExpr(fun.toStdString());*/
 }
 
 void Dane::setConstr(QString *Constr_tab)
