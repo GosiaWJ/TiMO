@@ -18,9 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
    // connect(data,SIGNAL(iteracja(int)),this,SLOT(dodaj_wynik(int)));
     ui->funkcja_celu_box->addItem("2*x1^2+x2^2-2*x1*x2");
     ui->funkcja_celu_box->addItem("(x1-2)^2+(x2-1)^2");
-
-
-
+    this->setWindowTitle("Powell&NS Optimisation Algorithm");
 
 }
 

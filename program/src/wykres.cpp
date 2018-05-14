@@ -20,8 +20,8 @@ Wykres::Wykres(QWidget *parent): QCustomPlot(parent)
     constrainsMap=new QCPColorMap(this->xAxis, this->yAxis);
     QCPColorGradient Gradient1;
     Gradient1.clearColorStops();
-    Gradient1.setColorStopAt(0, QColor(0,0,0,40));
-    Gradient1.setColorStopAt(1, QColor(0,0,0,00));
+    Gradient1.setColorStopAt(1, QColor(0,0,0,60));
+    Gradient1.setColorStopAt(0, QColor(0,0,0,00));
     Gradient1.setLevelCount(2);
     constrainsMap->setGradient(Gradient1);
 
