@@ -11,14 +11,14 @@ using namespace std;
 
 Wykres::Wykres(QWidget *parent): QCustomPlot(parent)
 {
+    this->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom); // this will also allow rescaling the color scale by dragging/zooming
+    this->axisRect()->setupFullAxesBox(true);
+    this->xAxis->setLabel("x1");
+    this->yAxis->setLabel("x2");
+
    colorMap = new QCPColorMap(this->xAxis, this->yAxis);
    constrainsMap=new QCPColorMap(this->xAxis, this->yAxis);
-   QCPColorGradient Gradient1;
-   Gradient1.clearColorStops();
-   Gradient1.setColorStopAt(0, QColor(0,0,0,40));
-   Gradient1.setColorStopAt(1, QColor(0,0,0,00));
-   Gradient1.setLevelCount(2);
-   constrainsMap->setGradient(Gradient1);
+
 
    this->addGraph(this->xAxis, this->yAxis);
    this->graph(0)->setPen(QPen(QColor(255, 100, 0)));
@@ -26,24 +26,7 @@ Wykres::Wykres(QWidget *parent): QCustomPlot(parent)
    this->graph(0)->setLineStyle(QCPGraph::lsLine);
    this->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
 
-   QCPColorScale *colorScale = new QCPColorScale(this);
-   if(this->plotLayout()->hasElement(0,1)) this->plotLayout()->remove(this->plotLayout()->element(0,1));
-   this->plotLayout()->addElement(0, 1, colorScale); // add it to the right of the main axis rect
-   colorScale->setType(QCPAxis::atRight); // scale shall be vertical bar with tick/axis labels right (actually atRight is already the default)
-   colorMap->setColorScale(colorScale); // associate the color map with the color scale
-   colorScale->axis()->setLabel("Wartosc funkcji");
 
-   // set the color gradient of the color map to one of the presets:
-   colorMap->setGradient(QCPColorGradient::gpHues);
-   // we could have also created a QCPColorGradient instance and added own colors to
-   // the gradient, see the documentation of QCPColorGradient for what's possible.
-
-   // rescale the data dimension (color) such that all data points lie in the span visualized by the color gradient:
-
-   // make sure the axis rect and color scale synchronize their bottom and top margins (so they line up):
-   QCPMarginGroup *marginGroup = new QCPMarginGroup(this);
-   this->axisRect()->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
-   colorScale->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
   // this->rescaleAxes();
 }
 /*!
@@ -52,14 +35,29 @@ Wykres::Wykres(QWidget *parent): QCustomPlot(parent)
  * \param qv_enc -wektor danych z enkodera
  */
 
-void Wykres::plot(double *p_s, double *wynik, QVector<double> x_1, QVector<double> x_2 )
+void Wykres::plot( QVector<double> x_1, QVector<double> x_2 )
 {
     Parser parser;
     // configure axis rect:
-    this->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom); // this will also allow rescaling the color scale by dragging/zooming
-    this->axisRect()->setupFullAxesBox(true);
-    this->xAxis->setLabel("x1");
-    this->yAxis->setLabel("x2");
+    QCPColorGradient Gradient1;
+    Gradient1.clearColorStops();
+    Gradient1.setColorStopAt(0, QColor(0,0,0,40));
+    Gradient1.setColorStopAt(1, QColor(0,0,0,00));
+    Gradient1.setLevelCount(2);
+    constrainsMap->setGradient(Gradient1);
+    QCPColorScale *colorScale = new QCPColorScale(this);
+    if(this->plotLayout()->hasElement(0,1)) this->plotLayout()->remove(this->plotLayout()->element(0,1));
+    this->plotLayout()->addElement(0, 1, colorScale); // add it to the right of the main axis rect
+    colorScale->setType(QCPAxis::atRight); // scale shall be vertical bar with tick/axis labels right (actually atRight is already the default)
+    colorMap->setColorScale(colorScale); // associate the color map with the color scale
+    colorScale->axis()->setLabel("Wartosc funkcji");
+    colorMap->setGradient(QCPColorGradient::gpHues);
+
+
+    QCPMarginGroup *marginGroup = new QCPMarginGroup(this);
+    this->axisRect()->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
+    colorScale->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
+
     double x_l, x_p, y_d, y_g;
     x_l=min(x_1.first(),x_1.at(x_1.size()-1))-0.15*abs(x_1.first()-x_1.at(x_1.size()-1));
     x_p= max(x_1.first(),x_1.at(x_1.size()-1))+0.15*abs(x_1.first()-x_1.at(x_1.size()-1));
@@ -89,8 +87,10 @@ void Wykres::plot(double *p_s, double *wynik, QVector<double> x_1, QVector<doubl
         colorMap->data()->setCell(xIndex, yIndex, z);
       }
     }
+
     colorMap->rescaleDataRange();
-    constrainsMap->data()->fillAlpha(10);
+    this->rescaleAxes();
+
     constrainsMap->data()->setSize(nx, ny); // we want the color map to have nx * ny data points
     constrainsMap->data()->setRange(QCPRange(x_l, x_p), QCPRange(y_d, y_g)); // and span the coordinate range -4..4 in both key (x) and value (y) dimensions
 
@@ -112,6 +112,8 @@ void Wykres::plot(double *p_s, double *wynik, QVector<double> x_1, QVector<doubl
       }
     }
     constrainsMap->rescaleDataRange();
+
+
 
     this->rescaleAxes();
    /* for (int i=0; i<x_2.size(); i++) {

@@ -71,10 +71,6 @@ void MainWindow::on_oblicz_clicked()
     p_s[3]=ui->x_40->text().toDouble();
     p_s[4]=ui->x_50->text().toDouble();
 
-    if(ui->ilosc_zmiennych_spinbox->value()==2){
-        for(int i=0;i<2;i++) start[i]=p_s[i];
-    }
-
     //delete data;
     data = new Dane(ui->epsilon0_spinbox->value(),ui->epsilon1_spinbox->value(),ui->epsilon2_spinbox->value(),p_s,ui->l_edit->text().toInt(0),ui->lista_ograniczen->count(), ui->ilosc_zmiennych_spinbox->value());
     data->setFunction(ui->funkcja_celu_box->currentText());
@@ -89,15 +85,14 @@ void MainWindow::on_oblicz_clicked()
     delete [] tablica_ograniczen;
      }
     else{} //co jak nie ma ograniczeń
-    //
+
     data->Optimalize();
 
     ui->wykres->setFunction(ui->funkcja_celu_box->currentText());
     if(ui->ilosc_zmiennych_spinbox->value()==2){
-        for(int i=0;i<2;i++) wynik[i]=data->variables[i];
-        ui->wykres->plot(start,wynik,data->punkty_powella[0],data->punkty_powella[1]);
+        ui->wykres->plot(data->punkty_powella[0],data->punkty_powella[1]);
     }
-
+    dodaj_wynik();
     data->clear_powell_points();
 
 }
@@ -139,10 +134,12 @@ void MainWindow::zmien_ilosc_zmiennych(int arg1)
     }
 }
 
-void MainWindow::dodaj_wynik(int k)
+void MainWindow::dodaj_wynik()
 {
     string wiadomosc;
-    wiadomosc="Iteracja "+to_string(k)+" ";
-    for(int i=0;i<data->ilosc_zmiennych;i++) wiadomosc+="x"+to_string(i)+" ="+to_string(data->variables[i])+ " ";
+    for(int k=0;k<data->punkty_powella[0].size();k++){
+    wiadomosc="Iteracja "+to_string(k+1)+": ";
+    for(int i=0;i<data->ilosc_zmiennych;i++) wiadomosc+="x"+to_string(i)+" ="+to_string(data->punkty_powella[i].at(k))+ " ";
     ui->wyniki->addItem(wiadomosc.c_str());
+    }
 }
