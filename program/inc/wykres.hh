@@ -27,7 +27,7 @@ public:
     void setFunction(const QString fun);
     void setConstr(QString *Constr_tab, int ilosc);
 public slots:
-    void plot( QVector<double> x_1, QVector<double> x_2);
+    void plot( QVector<double> x_1, QVector<double> x_2 ,double x_l, double x_p, double y_d, double y_g);
 
 
 };

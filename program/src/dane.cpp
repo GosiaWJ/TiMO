@@ -5,7 +5,7 @@ using namespace mu;
 #include<string>
 #include<math.h>
 #include<locale.h>
-
+#include<QMessageBox>
 
 using namespace std;
 
@@ -18,6 +18,7 @@ Dane::Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne)
     punkt_startowy=new double[zmienne];
     punkt_startowy=x0;
     liczba_iteracji=l;
+    cout<<"liczba_iteracji "<<l<<endl;
     ilosc_zmiennych=zmienne; //zmienić to potem
     punkty_powella=new QVector<double>[ilosc_zmiennych];
     ilosc_ograniczen=ogr;
@@ -41,6 +42,7 @@ Dane::~Dane()
 
 double *Dane::Gradient(const string& fun)
 {
+
     double *gradient=new double[ilosc_zmiennych];
     expr_parser.SetVariableID("x1", 0);
     expr_parser.SetVariableID("x2", 1);
@@ -57,6 +59,7 @@ double *Dane::Gradient(const string& fun)
     }
 
     return gradient;
+
 }
 
 
@@ -73,68 +76,78 @@ void Dane::Optimalize()
     parser.DefineVar("x3", &variables[2]);
     parser.DefineVar("x4", &variables[3]);
     parser.DefineVar("x5", &variables[4]);
+
+
     Powell();
 
     }
      catch(mu::Parser::exception_type &e){
         cout<<"BŁĄD PARSERA" <<endl;
-     }
+        QMessageBox::StandardButton reply;
+          reply=QMessageBox::question(nullptr, "Error", "Check your formula. MuParser doesn't understand. Try again?",
+                                                QMessageBox::Yes|QMessageBox::No,  QMessageBox::Yes);
+          if(reply==QMessageBox::No)
+          {
+                exit(1);
+          }
+         }
 
 }
 
-double *Dane::NS(const string& fun)
-{
-    // for(int i=0;i<ilosc_zmiennych;i++)   std::cout <<"startowy"<<i<<" "<< variables[i] << std::endl;
+double Dane::NS(const string& fun)
+{int n=ilosc_zmiennych; //l. zmiennych
+    double g2=10;
+    double epsilon=pow(10,epsilon0);
+    int k=0;
+    double tau, f,f0;
 
-     int n=ilosc_zmiennych; //l. zmiennych
-     double g2=10;
-     double epsilon=pow(10,epsilon0);
+    while(abs(g2)>epsilon){
 
-     while(abs(g2)>epsilon){
+    double ksi[n];
+    double P=0;
+    double ksi2=0;
+    double tau_l=0;
+    double tau_r=5;
+    double beta=0.25;
+    bool the_end=1;
+    double var[n];
+    for (int i=0; i<n; i++) var[i]=variables[i];
+    double *grad=Gradient(fun);
 
-     double *grad=Gradient(fun);
-     double ksi[n];
-     double P=0;
-     double ksi2=0;
-     double tau_l=0;
-     double tau_r=1;
-     double tau, f,f0;
-     double beta=0.25;
-     bool the_end=1;
-     double var[n];
-     for (int i=0; i<n; i++) var[i]=variables[i];
 
-     parser.SetExpr(fun);
-     f0=parser.Eval();
-     for (int i=0; i<n; i++) ksi[i]=(-1)*grad[i]; //wyznaczenie kierunku
-     for (int i=0; i<n; i++) P=P+grad[i]*ksi[i]; //pochodna kierunkowa
-     while(the_end){
-         tau=0.5*(tau_l+tau_r);
+    parser.SetExpr(fun);
+    f0=parser.Eval();
+    for (int i=0; i<n; i++) ksi[i]=(-1)*grad[i]; //wyznaczenie kierunku
+    for (int i=0; i<n; i++) P=P+grad[i]*ksi[i]; //pochodna kierunkowa
+    while(the_end){
+        tau=0.5*(tau_l+tau_r);
 
-         for (int i=0; i<n; i++) variables[i]=var[i]+tau*ksi[i];
-         f=parser.Eval();
+        for (int i=0; i<n; i++) variables[i]=var[i]+tau*ksi[i];
+        f=parser.Eval();
 
-         if(f<f0+(1-beta)*P*tau){
-         tau_l=tau;
-         }
-         else{
-         if(f>f0+beta*P*tau){
-         tau_r=tau;}
-         else the_end=0;
-         }
+        if(f<f0+(1-beta)*P*tau){
+        tau_l=tau;
+        }
+        else{
+        if(f>f0+beta*P*tau){
+        tau_r=tau;}
+        else the_end=0;
+        }
 
-     }
-     for (int i=0; i<n; i++) variables[i]=var[i]+tau*ksi[i];
-     g2=0;
-     for (int i=0; i<n; i++) g2=g2+grad[i]*grad[i];
-
- }
-
- return variables;
+    }
+    for (int i=0; i<n; i++) variables[i]=var[i]+tau*ksi[i];
+    g2=0;
+    for (int i=0; i<n; i++) g2=g2+grad[i]*grad[i];
+k++;
+if(k>liczba_iteracji) break;
 }
+return f;
+}
+
 
 void Dane::Powell()
 {
+    clear_powell_points();
     double sigma[ilosc_ograniczen];
     double theta[ilosc_ograniczen];
     double g0[ilosc_ograniczen];
@@ -144,8 +157,11 @@ void Dane::Powell()
     double m2=10;
     bool krok_6=false;
     bool krok_6_p=false;
+    double f_przed=100000000;
+    double f=0;
     int k=0;
-    c=7;
+    c=50;
+    for (int i=0; i<ilosc_zmiennych; i++) punkty_powella[i].append(punkt_startowy[i]);
     cmin=pow(10,-4); //to jest pewnie jakiś epsilon
     for (int i=0; i<ilosc_ograniczen; i++){
        sigma[i]=1;
@@ -170,23 +186,29 @@ void Dane::Powell()
             }
         }
         parser.SetExpr(funkcja_powella);
-        //cout<<"Funkcja Powella "<<funkcja_powella<<"Wartość" <<parser.Eval()<<endl;
-        for (int i=0; i<ilosc_zmiennych; i++) {punkty_powella[i].append(variables[i]);
-        cout<<"x"<<i<<"="<<variables[i]<<" ";
-        }
-        cout<<endl;
 
         QString *funkcja;
         funkcja->fromStdString(funkcja_powella);
-        NS(funkcja_powella);
+        f_przed=f;
+        f=NS(funkcja_powella);
+
+        for (int i=0; i<ilosc_zmiennych; i++) {punkty_powella[i].append(variables[i]);
+        }
+        if(abs(f_przed-f)<pow(10,epsilon2)) break;
+        double blad=0.0;
+        for (int i=0; i<ilosc_zmiennych; i++) blad=blad + pow(abs(variables[i]-punkty_powella[i].at(punkty_powella->size()-2)),2);
+        blad=sqrt(blad);
+        if(blad<pow(10,epsilon1)) break;
 
         c0=c;
-        c=0;
+        double c_k=0;
+
         for (int i=0; i<ilosc_ograniczen; i++) {
             parser.SetExpr(ograniczenia[i].toStdString());
             g[i]=parser.Eval();
-            if(H(g0[i]+theta[i])) c=max(c,abs(g[i]));
+            if(H(g0[i]+theta[i])) c_k=max(c_k,abs(g[i]));
         }
+        if(c_k>0) c=c_k;
         if(c<cmin)   {
             theEnd=0;
             break;
@@ -212,7 +234,6 @@ void Dane::Powell()
                 k=k+1;
                 for (int i=0; i<ilosc_ograniczen; i++) g0[i]=g[i];
                 //
-              //  emit iteracja(k);
 
             }
             else{//krok 8
@@ -232,7 +253,6 @@ void Dane::Powell()
 
     }
     for (int i=0; i<ilosc_zmiennych; i++) {
-     // cout<<"powell"<<punkty_powella[i].at(0)<<" ";
     }
 }
 
