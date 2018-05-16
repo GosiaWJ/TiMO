@@ -36,7 +36,7 @@ public:
     void set_l_i(const int l){liczba_iteracji=l;}
     double* Gradient(const string& fun);
     void Optimalize();
-    double *NS(const string& fun);
+    double NS(const string& fun);
     void Powell();
     void clear_powell_points(){
         for(int i=0;i<ilosc_zmiennych;i++) punkty_powella[i].clear();

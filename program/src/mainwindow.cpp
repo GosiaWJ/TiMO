@@ -17,10 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->ilosc_zmiennych_spinbox,SIGNAL(valueChanged(int)),this,SLOT(zmien_ilosc_zmiennych(int)));
    // connect(data,SIGNAL(iteracja(int)),this,SLOT(dodaj_wynik(int)));
     ui->funkcja_celu_box->addItem("2*x1^2+x2^2-2*x1*x2");
-    ui->funkcja_celu_box->addItem("x1^4+x2^4-2*x1^2*x2-4*x1+3");
-
-
-
+    ui->funkcja_celu_box->addItem("(x1-2)^2+(x2-1)^2");
+    this->setWindowTitle("Powell&NS Optimisation Algorithm");
 
 }
 
@@ -64,18 +62,11 @@ void MainWindow::on_oblicz_clicked()
     double start[2];
     double wynik[2];
     double p_s[5];
-   // p_s=new double[n]; //odczytywaie punktu startowego
     p_s[0]=ui->x_10->text().toDouble();
     p_s[1]=ui->x_20->text().toDouble();
     p_s[2]=ui->x_30->text().toDouble();
     p_s[3]=ui->x_40->text().toDouble();
     p_s[4]=ui->x_50->text().toDouble();
-
-    mu::Parser cosiek;
-    double hehe=1;
-    cosiek.DefineVar("var1", &hehe);
-    cosiek.SetExpr("var1+3");
-    cout<< "nie uda sie "<<cosiek.Eval()<<endl;
 
     //delete data;
     data = new Dane(ui->epsilon0_spinbox->value(),ui->epsilon1_spinbox->value(),ui->epsilon2_spinbox->value(),p_s,ui->l_edit->text().toInt(0),ui->lista_ograniczen->count(), ui->ilosc_zmiennych_spinbox->value());
@@ -96,10 +87,11 @@ void MainWindow::on_oblicz_clicked()
 
     ui->wykres->setFunction(ui->funkcja_celu_box->currentText());
     if(ui->ilosc_zmiennych_spinbox->value()==2){
-        ui->wykres->plot(data->punkty_powella[0],data->punkty_powella[1]);
+    ui->plot->setEnabled(true);
     }
+    else ui->plot->setEnabled(false);
     dodaj_wynik();
-    data->clear_powell_points();
+    //data->clear_powell_points();
 
 }
 
@@ -142,10 +134,18 @@ void MainWindow::zmien_ilosc_zmiennych(int arg1)
 
 void MainWindow::dodaj_wynik()
 {
+    ui->wyniki->clear();
     string wiadomosc;
     for(int k=0;k<data->punkty_powella[0].size();k++){
     wiadomosc="Iteracja "+to_string(k+1)+": ";
     for(int i=0;i<data->ilosc_zmiennych;i++) wiadomosc+="x"+to_string(i)+" ="+to_string(data->punkty_powella[i].at(k))+ " ";
     ui->wyniki->addItem(wiadomosc.c_str());
     }
+}
+
+
+void MainWindow::on_plot_clicked()
+{
+    ui->wykres->plot(data->punkty_powella[0],data->punkty_powella[1],ui->x_1l_edit->text().toDouble(),ui->x_1p_edit->text().toDouble(),ui->x_2l_edit->text().toDouble(),ui->x_2p_edit->text().toDouble());
+
 }

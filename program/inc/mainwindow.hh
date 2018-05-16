@@ -34,6 +34,8 @@ private slots:
 
     void dodaj_wynik();
 
+    void on_plot_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
