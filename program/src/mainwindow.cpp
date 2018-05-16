@@ -105,30 +105,35 @@ void MainWindow::zmien_ilosc_zmiennych(int arg1)
    ui->x_30->setVisible(false);
    ui->x_40->setVisible(false);
    ui->x_50->setVisible(false);
+   ui->horizontalSpacer_8->changeSize(160,10);
    }
     if(ilosc==2)
     {ui->x_20->setVisible(true);
     ui->x_30->setVisible(false);
     ui->x_40->setVisible(false);
     ui->x_50->setVisible(false);
+    ui->horizontalSpacer_8->changeSize(125,10);
     }
     if(ilosc==3)
     {ui->x_20->setVisible(true);
     ui->x_30->setVisible(true);
     ui->x_40->setVisible(false);
     ui->x_50->setVisible(false);
+    ui->horizontalSpacer_8->changeSize(90,10);
     }
     if(ilosc==4)
     {ui->x_20->setVisible(true);
     ui->x_30->setVisible(true);
     ui->x_40->setVisible(true);
     ui->x_50->setVisible(false);
+    ui->horizontalSpacer_8->changeSize(55,10);
     }
     if(ilosc==5)
     {ui->x_20->setVisible(true);
     ui->x_30->setVisible(true);
     ui->x_40->setVisible(true);
     ui->x_50->setVisible(true);
+    ui->horizontalSpacer_8->changeSize(15,10);
     }
 }
 

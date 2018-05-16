@@ -95,7 +95,9 @@ void Dane::Optimalize()
 }
 
 double Dane::NS(const string& fun)
-{int n=ilosc_zmiennych; //l. zmiennych
+{
+    cout<<"NS"<<endl;
+    int n=ilosc_zmiennych; //l. zmiennych
     double g2=10;
     double epsilon=pow(10,epsilon0);
     int k=0;
@@ -138,6 +140,12 @@ double Dane::NS(const string& fun)
     for (int i=0; i<n; i++) variables[i]=var[i]+tau*ksi[i];
     g2=0;
     for (int i=0; i<n; i++) g2=g2+grad[i]*grad[i];
+
+double blad=0.0;
+for (int i=0; i<ilosc_zmiennych; i++) blad=blad + pow(abs(variables[i]-var[i]),2);
+blad=sqrt(blad);
+if(blad<pow(10,epsilon1)) break;
+if(abs(f0-f)<pow(10,epsilon2)) break;
 k++;
 if(k>liczba_iteracji) break;
 }
@@ -147,6 +155,7 @@ return f;
 
 void Dane::Powell()
 {
+
     clear_powell_points();
     double sigma[ilosc_ograniczen];
     double theta[ilosc_ograniczen];
@@ -173,7 +182,7 @@ void Dane::Powell()
     }
     int theEnd=1;
     while(theEnd){
-
+cout<<"Powell"<<endl;
         string funkcja_powella;
         funkcja_powella=funkcja_celu->toStdString();
 
@@ -194,11 +203,13 @@ void Dane::Powell()
 
         for (int i=0; i<ilosc_zmiennych; i++) {punkty_powella[i].append(variables[i]);
         }
-        if(abs(f_przed-f)<pow(10,epsilon2)) break;
+        //if(abs(f_przed-f)<pow(10,epsilon2)) break;
+        /*
         double blad=0.0;
         for (int i=0; i<ilosc_zmiennych; i++) blad=blad + pow(abs(variables[i]-punkty_powella[i].at(punkty_powella->size()-2)),2);
         blad=sqrt(blad);
         if(blad<pow(10,epsilon1)) break;
+        */
 
         c0=c;
         double c_k=0;
@@ -274,3 +285,4 @@ void Dane::setConstr(QString *Constr_tab)
     ograniczenia[i]=QString(Constr_tab[i]);
     }
 }
+
