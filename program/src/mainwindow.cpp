@@ -71,6 +71,12 @@ void MainWindow::on_oblicz_clicked()
     p_s[3]=ui->x_40->text().toDouble();
     p_s[4]=ui->x_50->text().toDouble();
 
+    mu::Parser cosiek;
+    double hehe=1;
+    cosiek.DefineVar("var1", &hehe);
+    cosiek.SetExpr("var1+3");
+    cout<< "nie uda sie "<<cosiek.Eval()<<endl;
+
     //delete data;
     data = new Dane(ui->epsilon0_spinbox->value(),ui->epsilon1_spinbox->value(),ui->epsilon2_spinbox->value(),p_s,ui->l_edit->text().toInt(0),ui->lista_ograniczen->count(), ui->ilosc_zmiennych_spinbox->value());
     data->setFunction(ui->funkcja_celu_box->currentText());
