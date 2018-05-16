@@ -22,7 +22,6 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QScrollArea>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
@@ -77,11 +76,8 @@ public:
     QPushButton *oblicz;
     QSpacerItem *horizontalSpacer;
     QVBoxLayout *verticalLayout;
-    QVBoxLayout *verticalLayout_2;
     Wykres *wykres;
-    QScrollArea *wyniki;
-    QWidget *scrollAreaWidgetContents;
-    QLineEdit *funkcja_celu;
+    QListWidget *wyniki;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -335,9 +331,6 @@ public:
         verticalLayout = new QVBoxLayout();
         verticalLayout->setSpacing(6);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        verticalLayout_2 = new QVBoxLayout();
-        verticalLayout_2->setSpacing(6);
-        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         wykres = new Wykres(centralWidget);
         wykres->setObjectName(QStringLiteral("wykres"));
         QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -345,37 +338,25 @@ public:
         sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(wykres->sizePolicy().hasHeightForWidth());
         wykres->setSizePolicy(sizePolicy3);
+        wykres->setMinimumSize(QSize(350, 350));
 
-        verticalLayout_2->addWidget(wykres);
+        verticalLayout->addWidget(wykres);
 
-        wyniki = new QScrollArea(centralWidget);
+        wyniki = new QListWidget(centralWidget);
         wyniki->setObjectName(QStringLiteral("wyniki"));
-        wyniki->setWidgetResizable(true);
-        scrollAreaWidgetContents = new QWidget();
-        scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 432, 257));
-        wyniki->setWidget(scrollAreaWidgetContents);
+        QSizePolicy sizePolicy4(QSizePolicy::Expanding, QSizePolicy::Minimum);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(wyniki->sizePolicy().hasHeightForWidth());
+        wyniki->setSizePolicy(sizePolicy4);
+        wyniki->setMinimumSize(QSize(0, 0));
 
-        verticalLayout_2->addWidget(wyniki);
-
-
-        verticalLayout->addLayout(verticalLayout_2);
-
-        funkcja_celu = new QLineEdit(centralWidget);
-        funkcja_celu->setObjectName(QStringLiteral("funkcja_celu"));
-
-        verticalLayout->addWidget(funkcja_celu);
+        verticalLayout->addWidget(wyniki);
 
 
         horizontalLayout_10->addLayout(verticalLayout);
 
         MainWindow->setCentralWidget(centralWidget);
-        x_20->raise();
-        x_30->raise();
-        x_40->raise();
-        x_50->raise();
-        funkcja_celu_box->raise();
-        wyniki->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 924, 22));
