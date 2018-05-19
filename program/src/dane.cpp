@@ -122,6 +122,13 @@ double Dane::NS(const string& fun)
     for (int i=0; i<n; i++) ksi[i]=(-1)*grad[i]; //wyznaczenie kierunku
     for (int i=0; i<n; i++) P=P+grad[i]*ksi[i]; //pochodna kierunkowa
     while(the_end){
+        /*double najmniejsza=-10000;
+        double najwieksza=10000;
+        for (int i=0; i<n; i++) {
+            najmniejsza=min(najmniejsza,variables[i]);
+            najwieksza=max(najwieksza, variables[i]);
+        }
+        if(najmniejsza<-10000||najwieksza>10000) break;*/
         tau=0.5*(tau_l+tau_r);
 
         for (int i=0; i<n; i++) variables[i]=var[i]+tau*ksi[i];
@@ -169,9 +176,9 @@ void Dane::Powell()
     double f_przed=100000000;
     double f=0;
     int k=0;
-    c=50;
+    c=0;
     for (int i=0; i<ilosc_zmiennych; i++) punkty_powella[i].append(punkt_startowy[i]);
-    cmin=pow(10,-4); //to jest pewnie jakiś epsilon
+    cmin=pow(10,-3); //to jest pewnie jakiś epsilon
     for (int i=0; i<ilosc_ograniczen; i++){
        sigma[i]=1;
        theta[i]=0;
@@ -182,7 +189,7 @@ void Dane::Powell()
     }
     int theEnd=1;
     while(theEnd){
-cout<<"Powell"<<endl;
+    cout<<"Powell"<<endl;
         string funkcja_powella;
         funkcja_powella=funkcja_celu->toStdString();
 
@@ -244,6 +251,7 @@ cout<<"Powell"<<endl;
                 //krok7
                 k=k+1;
                 for (int i=0; i<ilosc_ograniczen; i++) g0[i]=g[i];
+                if(k>liczba_iteracji) theEnd=0;
                 //
 
             }

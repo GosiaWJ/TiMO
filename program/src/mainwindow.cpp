@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
    // connect(data,SIGNAL(iteracja(int)),this,SLOT(dodaj_wynik(int)));
     ui->funkcja_celu_box->addItem("2*x1^2+x2^2-2*x1*x2");
     ui->funkcja_celu_box->addItem("(x1-2)^2+(x2-1)^2");
+     ui->funkcja_celu_box->addItem("x1^4+x2^4-x1^2-x2^2");
     this->setWindowTitle("Powell&NS Optimisation Algorithm");
 
 }
@@ -152,5 +153,5 @@ void MainWindow::dodaj_wynik()
 void MainWindow::on_plot_clicked()
 {
     ui->wykres->plot(data->punkty_powella[0],data->punkty_powella[1],ui->x_1l_edit->text().toDouble(),ui->x_1p_edit->text().toDouble(),ui->x_2l_edit->text().toDouble(),ui->x_2p_edit->text().toDouble());
-
+    ui->plot->setEnabled(false);
 }
