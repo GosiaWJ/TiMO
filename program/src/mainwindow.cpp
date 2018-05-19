@@ -21,6 +21,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->funkcja_celu_box->addItem("(x1-2)^2+(x2-1)^2");
      ui->funkcja_celu_box->addItem("x1^4+x2^4-x1^2-x2^2");
     this->setWindowTitle("Powell&NS Optimisation Algorithm");
+     ui->statusBar->setVisible(true);
+     ui->statusBar->setUpdatesEnabled(true);
+     ui->statusBar->showMessage("Ready!");
 
 }
 
@@ -61,6 +64,8 @@ void MainWindow::on_epsilon2_spinbox_valueChanged(int arg1)
 void MainWindow::on_oblicz_clicked()
 {
 
+    ui->statusBar->showMessage("Busy");
+
     double start[2];
     double wynik[2];
     double p_s[5];
@@ -94,6 +99,8 @@ void MainWindow::on_oblicz_clicked()
     else ui->plot->setEnabled(false);
     dodaj_wynik();
     //data->clear_powell_points();
+    ui->statusBar->showMessage("Done");
+
 
 }
 
@@ -145,10 +152,11 @@ void MainWindow::dodaj_wynik()
     string wiadomosc;
     for(int k=0;k<data->punkty_powella[0].size();k++){
     wiadomosc="Iteracja "+to_string(k+1)+": ";
-    for(int i=0;i<data->ilosc_zmiennych;i++) wiadomosc+="x"+to_string(i)+" ="+to_string(data->punkty_powella[i].at(k))+ " ";
+    for(int i=0;i<data->ilosc_zmiennych;i++) wiadomosc+="x"+to_string(i+1)+" ="+to_string(data->punkty_powella[i].at(k))+ " ";
     wiadomosc+="f(x) = "+to_string(data->punkty_powella[data->ilosc_zmiennych].at(k));
     ui->wyniki->addItem(wiadomosc.c_str());
     }
+   //for(int i=0;i<data->punkty_powella[0].size();i++) cout<<"funkcja "<<data->punkty_powella[data->ilosc_zmiennych].at(i)<<endl;
     wiadomosc="\nKryterium stopu: ";
     switch(data->kryterium_stopu)
     {
@@ -172,6 +180,10 @@ void MainWindow::dodaj_wynik()
 
 void MainWindow::on_plot_clicked()
 {
+    ui->statusBar->showMessage("Plotting...");
+
     ui->wykres->plot(data->punkty_powella[0],data->punkty_powella[1],ui->x_1l_edit->text().toDouble(),ui->x_1p_edit->text().toDouble(),ui->x_2l_edit->text().toDouble(),ui->x_2p_edit->text().toDouble());
-    ui->plot->setEnabled(false);
+    ui->plot->setEnabled(true);
+    ui->statusBar->showMessage("Done");
+
 }

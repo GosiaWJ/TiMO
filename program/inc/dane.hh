@@ -25,8 +25,8 @@ public:
     int ilosc_zmiennych;
     int ilosc_ograniczen;
     double *punkt_startowy;
-    double *variables;
     int kryterium_stopu=0;
+    double *variables;
     QVector<double> *punkty_powella;
     QString *ograniczenia;
     Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne);
@@ -40,11 +40,11 @@ public:
     double NS(const string& fun);
     void Powell();
     void clear_powell_points(){
-        for(int i=0;i<ilosc_zmiennych;i++) punkty_powella[i].clear();
+        for(int i=0;i<ilosc_zmiennych+1;i++) punkty_powella[i].clear();
     }
 
     int H(double x){
-        if(x<=0) return 1;
+        if(x<0) return 1;
         else return 0;
     }
     double Function(double x1, double x2);

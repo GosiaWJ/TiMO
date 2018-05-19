@@ -1,3 +1,4 @@
+
 #include "dane.hh"
 #include<cmath>
 using namespace mu;
@@ -8,6 +9,7 @@ using namespace mu;
 #include<QMessageBox>
 
 using namespace std;
+
 
 Dane::Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne)
 {
@@ -22,7 +24,7 @@ Dane::Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne)
     punkty_powella=new QVector<double>[ilosc_zmiennych+1];
     ilosc_ograniczen=ogr;
     variables=new double[5];
-    for (int i=0; i<zmienne; i++) variables[i]=0;
+    for (int i=0; i<5; i++) variables[i]=0;
     ograniczenia=new QString[ilosc_ograniczen];
     setlocale(LC_ALL,"C");
 
@@ -95,7 +97,7 @@ void Dane::Optimalize()
 
 double Dane::NS(const string& fun)
 {
-
+    //cout<<"NS"<<endl;
     int n=ilosc_zmiennych; //l. zmiennych
     double g2=10;
     double epsilon=pow(10,epsilon0);
@@ -103,9 +105,10 @@ double Dane::NS(const string& fun)
     double tau, f,f0;
 
     while(abs(g2)>epsilon){
-    kryterium_stopu=1;
+
     double ksi[n];
     double P=0;
+    double ksi2=0;
     double tau_l=0;
     double tau_r=5;
     double beta=0.25;
@@ -146,15 +149,15 @@ double Dane::NS(const string& fun)
     g2=0;
     for (int i=0; i<n; i++) g2=g2+grad[i]*grad[i];
 
-double blad=0.0;
-for (int i=0; i<ilosc_zmiennych; i++) blad=blad + pow(abs(variables[i]-var[i]),2);
-blad=sqrt(blad);
-if(blad<pow(10,epsilon1)){ kryterium_stopu=2; break;}
-if(abs(f0-f)<pow(10,epsilon2)) {kryterium_stopu=3; break;}
-k++;
-if(k>liczba_iteracji){ kryterium_stopu=4; break;}
-}
-return f;
+   /* double blad=0.0;
+    for (int i=0; i<ilosc_zmiennych; i++) blad=blad + pow(abs(variables[i]-var[i]),2);
+    blad=sqrt(blad);
+    if(blad<pow(10,epsilon1)){ kryterium_stopu=2; break;}
+    if(abs(f0-f)<pow(10,epsilon2)) {kryterium_stopu=3; break;}
+    k++;
+    if(k>liczba_iteracji){ kryterium_stopu=4; break;}*/
+    }
+    return f;
 }
 
 
@@ -172,40 +175,34 @@ void Dane::Powell()
     bool krok_6=false;
     bool krok_6_p=false;
     double f_przed=100000000;
-    double f=0;
+    double f=0.0;
     int k=0;
     c=0;
     for (int i=0; i<ilosc_zmiennych; i++) punkty_powella[i].append(punkt_startowy[i]);
-<<<<<<< HEAD
-    cmin=pow(10,-3); //to jest pewnie jakiś epsilon
-=======
     parser.SetExpr(funkcja_celu->toStdString());
-    punkty_powella[ilosc_zmiennych].append(parser.Eval());
-    cmin=pow(10,-4); //to jest pewnie jakiś epsilon
->>>>>>> f9240f199a8344e83bb25c13c104893b4d54427f
+    f=parser.Eval();
+    punkty_powella[ilosc_zmiennych].append(f);
+
+    cmin=pow(10,-5); //to jest pewnie jakiś epsilon
     for (int i=0; i<ilosc_ograniczen; i++){
        sigma[i]=1;
        theta[i]=0;
     }
     for (int i=0; i<ilosc_ograniczen; i++) {
         parser.SetExpr(ograniczenia[i].toStdString());
-        g0[i]=parser.Eval();
+        g0[i]=-parser.Eval();
     }
     int theEnd=1;
     while(theEnd){
-<<<<<<< HEAD
-    cout<<"Powell"<<endl;
-=======
->>>>>>> f9240f199a8344e83bb25c13c104893b4d54427f
+    //cout<<"Powell"<<endl;
         string funkcja_powella;
         funkcja_powella=funkcja_celu->toStdString();
-
         for (int i=0; i<ilosc_ograniczen; i++) {
 
             if(H(g0[i]+theta[i])){
                 string s=to_string(sigma[i]);
                 string t=to_string(theta[i]);
-                funkcja_powella+="+"+s+"*("+ograniczenia[i].toStdString()+"+"+t+")^2";
+                funkcja_powella+="+"+s+"*(-("+ograniczenia[i].toStdString()+")+"+t+")^2";
             }
         }
         parser.SetExpr(funkcja_powella);
@@ -217,22 +214,16 @@ void Dane::Powell()
 
         for (int i=0; i<ilosc_zmiennych; i++) {punkty_powella[i].append(variables[i]);
         }
+        //cout<<"f"<<f<<endl;
         punkty_powella[ilosc_zmiennych].append(f);
-        //if(abs(f_przed-f)<pow(10,epsilon2)) break;
-        /*
-        double blad=0.0;
-        for (int i=0; i<ilosc_zmiennych; i++) blad=blad + pow(abs(variables[i]-punkty_powella[i].at(punkty_powella->size()-2)),2);
-        blad=sqrt(blad);
-        if(blad<pow(10,epsilon1)) break;
-        */
 
         c0=c;
-        double c_k=0;
+        double c_k=0.0;
 
         for (int i=0; i<ilosc_ograniczen; i++) {
             parser.SetExpr(ograniczenia[i].toStdString());
-            g[i]=parser.Eval();
-            if(H(g0[i]+theta[i])) c_k=max(c_k,abs(g[i]));
+            g[i]=-parser.Eval();
+            if(H(g[i]+theta[i])) c_k=max(c_k,abs(g[i]));
         }
         if(c_k>0) c=c_k;
         if(c<cmin)   {
@@ -277,22 +268,24 @@ void Dane::Powell()
 
 
         }
+        double blad=0.0;
+        for (int i=0; i<ilosc_zmiennych; i++) blad=blad + pow(abs(punkty_powella->last()-punkty_powella->at(punkty_powella->size()-2)),2);
+        blad=sqrt(blad);
+        if(blad<pow(10,epsilon1)){ kryterium_stopu=2; break;}
+        if(abs(f_przed-f)<pow(10,epsilon2)) {kryterium_stopu=3; break;}
+        k++;
+        if(k>liczba_iteracji){ kryterium_stopu=4; break;}
 
     }
-    for (int i=0; i<ilosc_zmiennych; i++) {
-    }
+
+
 }
 
 
 void Dane::setFunction(const QString fun)
 {
     funkcja_celu=new QString(fun);
-/*    parser.DefineVar("x1", &variables[0]);
-    parser.DefineVar("x2", &variables[1]);
-    parser.DefineVar("x3", &variables[2]);
-    parser.DefineVar("x4", &variables[3]);
-    parser.DefineVar("x5", &variables[4]);
-    parser.SetExpr(fun.toStdString());*/
+
 }
 
 void Dane::setConstr(QString *Constr_tab)
@@ -301,4 +294,5 @@ void Dane::setConstr(QString *Constr_tab)
     ograniczenia[i]=QString(Constr_tab[i]);
     }
 }
+
 
