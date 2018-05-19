@@ -4,6 +4,7 @@
 using namespace std;
 
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -145,8 +146,27 @@ void MainWindow::dodaj_wynik()
     for(int k=0;k<data->punkty_powella[0].size();k++){
     wiadomosc="Iteracja "+to_string(k+1)+": ";
     for(int i=0;i<data->ilosc_zmiennych;i++) wiadomosc+="x"+to_string(i)+" ="+to_string(data->punkty_powella[i].at(k))+ " ";
+    wiadomosc+="f(x) = "+to_string(data->punkty_powella[data->ilosc_zmiennych].at(k));
     ui->wyniki->addItem(wiadomosc.c_str());
     }
+    wiadomosc="\nKryterium stopu: ";
+    switch(data->kryterium_stopu)
+    {
+    case 0:
+        wiadomosc+="Minimum nieznaleziono"; break;
+    case 1:
+        wiadomosc+="kryterium gradientu"; break;
+    case 2:
+        wiadomosc+="||x^(i) - x^(i-1)||<= epsilon_1"; break;
+    case 3:
+        wiadomosc+="|f(x^(i))-f(x^(i-1))|<=epsilon_2"; break;
+    case 4:
+        wiadomosc+="przekroczona liczba iteracji"; break;
+
+    default:
+        break;
+    }
+   ui->wyniki->addItem(wiadomosc.c_str());
 }
 
 

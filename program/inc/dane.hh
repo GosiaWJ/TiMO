@@ -26,6 +26,7 @@ public:
     int ilosc_ograniczen;
     double *punkt_startowy;
     double *variables;
+    int kryterium_stopu=0;
     QVector<double> *punkty_powella;
     QString *ograniczenia;
     Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne);
