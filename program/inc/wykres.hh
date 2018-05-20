@@ -17,8 +17,9 @@ class Wykres:public QCustomPlot
     QString *funkcja_celu;
     QCPColorMap *colorMap;
     QCPColorMap *constrainsMap;
+    QCPColorScale *colorScale;
     QString *ograniczenia;
-    int ilosc_ograniczen;
+    int ilosc_ograniczen=0;
 
 
 public:

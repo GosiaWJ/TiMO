@@ -25,13 +25,14 @@ Wykres::Wykres(QWidget *parent): QCustomPlot(parent)
     Gradient1.setLevelCount(2);
     constrainsMap->setGradient(Gradient1);
 
-    QCPColorScale *colorScale = new QCPColorScale(this);
+    colorScale = new QCPColorScale(this);
     if(this->plotLayout()->hasElement(0,1)) this->plotLayout()->remove(this->plotLayout()->element(0,1));
     this->plotLayout()->addElement(0, 1, colorScale); // add it to the right of the main axis rect
     colorScale->setType(QCPAxis::atRight); // scale shall be vertical bar with tick/axis labels right (actually atRight is already the default)
     colorMap->setColorScale(colorScale); // associate the color map with the color scale
     colorScale->axis()->setLabel("Wartosc funkcji");
     colorMap->setGradient(QCPColorGradient::gpJet);
+    colorMap->colorScale()->setRangeZoom(true);
 
 
     QCPMarginGroup *marginGroup = new QCPMarginGroup(this);
@@ -79,6 +80,8 @@ void Wykres::plot( QVector<double> x_1, QVector<double> x_2 ,double x_l, double 
 
    // cout<<x_l<<" "<<x_p<<" "<<y_d<<" "<<y_g<<endl;
     // set up the QCPColorMap:
+    if(colorMap->data()->isEmpty()) colorMap->data()->clear();
+
     int nx = 300;
     int ny = 300;
     colorMap->data()->setSize(nx, ny); // we want the color map to have nx * ny data points
@@ -98,13 +101,13 @@ void Wykres::plot( QVector<double> x_1, QVector<double> x_2 ,double x_l, double 
         colorMap->data()->setCell(xIndex, yIndex, z);
       }
     }
-
-
-
+    colorMap->data()->recalculateDataBounds();
     colorMap->rescaleDataRange();
 
+if(ilosc_ograniczen>0){
+
     constrainsMap->data()->setSize(nx, ny); // we want the color map to have nx * ny data points
-    constrainsMap->data()->setRange(QCPRange(x_l,x_p), QCPRange(y_d,y_g)); // and span the coordinate range -4..4 in both key (x) and value (y) dimensions
+    constrainsMap->data()->setRange(QCPRange(x_l,x_p), QCPRange(y_d,y_g));
 
     for (int xIndex=0; xIndex<nx; ++xIndex)
     {
@@ -123,12 +126,9 @@ void Wykres::plot( QVector<double> x_1, QVector<double> x_2 ,double x_l, double 
       }
     }
     constrainsMap->rescaleDataRange();
+}
 
 
-   for (int i=0; i<x_2.size(); i++) {
-    cout<<"wy_x"<<i<<"="<<x_1.at(i)<<" "<<x_2.at(i)<<" "<<endl;
-    }
-    cout<<endl;
     //plotting points
 
     this->graph(0)->setData(x_1,x_2,true);

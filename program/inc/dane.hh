@@ -17,6 +17,7 @@ QString *funkcja_celu;
 Ev3::ExpressionParser expr_parser;
 
 
+
 public:
     int epsilon0;
     int epsilon1;
@@ -24,12 +25,14 @@ public:
     int liczba_iteracji;
     int ilosc_zmiennych;
     int ilosc_ograniczen;
+    double tau_r;
+    double beta;
     double *punkt_startowy;
     int kryterium_stopu=0;
     double *variables;
     QVector<double> *punkty_powella;
     QString *ograniczenia;
-    Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne);
+    Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne, double t, double b);
     void set_e_0(const int e0){epsilon0=e0;}
     void set_e_1(const int e1){epsilon1=e1;}
     void set_e_2(const int e2){epsilon2=e2;}

@@ -11,11 +11,13 @@ using namespace mu;
 using namespace std;
 
 
-Dane::Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne)
+Dane::Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne, double t, double b)
 {
     epsilon0=e0;
     epsilon1=e1;
     epsilon2=e2;
+    beta=b;
+    tau_r=t;
     punkt_startowy=new double[zmienne];
     punkt_startowy=x0;
     liczba_iteracji=l;
@@ -97,7 +99,7 @@ void Dane::Optimalize()
 
 double Dane::NS(const string& fun)
 {
-    //cout<<"NS"<<endl;
+    cout<<"NS"<<tau_r<<" "<<beta<<endl;
     int n=ilosc_zmiennych; //l. zmiennych
     double g2=10;
     double epsilon=pow(10,epsilon0);
@@ -110,8 +112,8 @@ double Dane::NS(const string& fun)
     double P=0;
     double ksi2=0;
     double tau_l=0;
-    double tau_r=5;
-    double beta=0.25;
+   // double tau_r=5;
+   //double beta=0.25;
     bool the_end=1;
     double var[n];
     for (int i=0; i<n; i++) var[i]=variables[i];
@@ -122,14 +124,9 @@ double Dane::NS(const string& fun)
     f0=parser.Eval();
     for (int i=0; i<n; i++) ksi[i]=(-1)*grad[i]; //wyznaczenie kierunku
     for (int i=0; i<n; i++) P=P+grad[i]*ksi[i]; //pochodna kierunkowa
+    int l=0;
     while(the_end){
-        /*double najmniejsza=-10000;
-        double najwieksza=10000;
-        for (int i=0; i<n; i++) {
-            najmniejsza=min(najmniejsza,variables[i]);
-            najwieksza=max(najwieksza, variables[i]);
-        }
-        if(najmniejsza<-10000||najwieksza>10000) break;*/
+
         tau=0.5*(tau_l+tau_r);
 
         for (int i=0; i<n; i++) variables[i]=var[i]+tau*ksi[i];
@@ -143,6 +140,8 @@ double Dane::NS(const string& fun)
         tau_r=tau;}
         else the_end=0;
         }
+        if(l>liczba_iteracji) the_end=0;
+        l++;
 
     }
     for (int i=0; i<n; i++) variables[i]=var[i]+tau*ksi[i];
@@ -153,9 +152,9 @@ double Dane::NS(const string& fun)
     for (int i=0; i<ilosc_zmiennych; i++) blad=blad + pow(abs(variables[i]-var[i]),2);
     blad=sqrt(blad);
     if(blad<pow(10,epsilon1)){ kryterium_stopu=2; break;}
-    if(abs(f0-f)<pow(10,epsilon2)) {kryterium_stopu=3; break;}
+    if(abs(f0-f)<pow(10,epsilon2)) {kryterium_stopu=3; break;}*/
     k++;
-    if(k>liczba_iteracji){ kryterium_stopu=4; break;}*/
+    if(k>liczba_iteracji){ kryterium_stopu=4; break;}
     }
     return f;
 }
@@ -228,6 +227,7 @@ void Dane::Powell()
         if(c_k>0) c=c_k;
         if(c<cmin)   {
             theEnd=0;
+            kryterium_stopu=5;
             break;
         }
         else
@@ -275,6 +275,7 @@ void Dane::Powell()
         if(abs(f_przed-f)<pow(10,epsilon2)) {kryterium_stopu=3; break;}
         k++;
         if(k>liczba_iteracji){ kryterium_stopu=4; break;}
+
 
     }
 

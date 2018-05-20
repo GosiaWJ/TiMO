@@ -19,11 +19,11 @@ MainWindow::MainWindow(QWidget *parent) :
    // connect(data,SIGNAL(iteracja(int)),this,SLOT(dodaj_wynik(int)));
     ui->funkcja_celu_box->addItem("2*x1^2+x2^2-2*x1*x2");
     ui->funkcja_celu_box->addItem("(x1-2)^2+(x2-1)^2");
-     ui->funkcja_celu_box->addItem("x1^4+x2^4-x1^2-x2^2");
+    ui->funkcja_celu_box->addItem("x1^4+x2^4-x1^2-x2^2");
     this->setWindowTitle("Powell&NS Optimisation Algorithm");
-     ui->statusBar->setVisible(true);
-     ui->statusBar->setUpdatesEnabled(true);
-     ui->statusBar->showMessage("Ready!");
+    ui->statusBar->setVisible(true);
+    ui->statusBar->setUpdatesEnabled(true);
+    ui->statusBar->showMessage("Ready!");
 
 }
 
@@ -76,7 +76,7 @@ void MainWindow::on_oblicz_clicked()
     p_s[4]=ui->x_50->text().toDouble();
 
     //delete data;
-    data = new Dane(ui->epsilon0_spinbox->value(),ui->epsilon1_spinbox->value(),ui->epsilon2_spinbox->value(),p_s,ui->l_edit->text().toInt(0),ui->lista_ograniczen->count(), ui->ilosc_zmiennych_spinbox->value());
+    data = new Dane(ui->epsilon0_spinbox->value(),ui->epsilon1_spinbox->value(),ui->epsilon2_spinbox->value(),p_s,ui->l_edit->text().toInt(0),ui->lista_ograniczen->count(), ui->ilosc_zmiennych_spinbox->value(),ui->tau_spinbox->value(),ui->beta_spinbox->value());
     data->setFunction(ui->funkcja_celu_box->currentText());
     ui->funkcja_celu_box->addItem(ui->funkcja_celu_box->currentText());
     QString *tablica_ograniczen=new QString[data->ilosc_ograniczen];
@@ -85,7 +85,7 @@ void MainWindow::on_oblicz_clicked()
         tablica_ograniczen[i]=QString(ui->lista_ograniczen->item(i)->text());
     }
     data->setConstr(tablica_ograniczen);
-    ui->wykres->setConstr(tablica_ograniczen,ui->lista_ograniczen->count());
+    if(ui->lista_ograniczen->count()>0) ui->wykres->setConstr(tablica_ograniczen,ui->lista_ograniczen->count());
     delete [] tablica_ograniczen;
      }
     else{} //co jak nie ma ograniczeń
@@ -97,6 +97,7 @@ void MainWindow::on_oblicz_clicked()
     ui->plot->setEnabled(true);
     }
     else ui->plot->setEnabled(false);
+
     dodaj_wynik();
     //data->clear_powell_points();
     ui->statusBar->showMessage("Done");

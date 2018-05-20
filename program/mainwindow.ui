@@ -594,6 +594,12 @@
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="locale">
+                 <locale language="English" country="UnitedStates"/>
+                </property>
+                <property name="value">
+                 <double>1.000000000000000</double>
+                </property>
                </widget>
               </item>
              </layout>
@@ -614,6 +620,15 @@
                   <width>55</width>
                   <height>16777215</height>
                  </size>
+                </property>
+                <property name="locale">
+                 <locale language="English" country="UnitedStates"/>
+                </property>
+                <property name="maximum">
+                 <double>1.000000000000000</double>
+                </property>
+                <property name="value">
+                 <double>0.200000000000000</double>
                 </property>
                </widget>
               </item>
