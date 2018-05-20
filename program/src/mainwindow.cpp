@@ -152,7 +152,8 @@ void MainWindow::dodaj_wynik()
     ui->wyniki->clear();
     string wiadomosc;
     for(int k=0;k<data->punkty_powella[0].size();k++){
-    wiadomosc="Iteracja "+to_string(k+1)+": ";
+        if (k==0)     wiadomosc="Punkt startowy: ";
+        else     wiadomosc="Iteracja "+to_string(k+1)+": ";
     for(int i=0;i<data->ilosc_zmiennych;i++) wiadomosc+="x"+to_string(i+1)+" ="+to_string(data->punkty_powella[i].at(k))+ " ";
     wiadomosc+="f(x) = "+to_string(data->punkty_powella[data->ilosc_zmiennych].at(k));
     ui->wyniki->addItem(wiadomosc.c_str());
@@ -171,7 +172,8 @@ void MainWindow::dodaj_wynik()
         wiadomosc+="|f(x^(i))-f(x^(i-1))|<=epsilon_2"; break;
     case 4:
         wiadomosc+="przekroczona liczba iteracji"; break;
-
+    case 5:
+        wiadomosc+="c<c_min"; break;
     default:
         break;
     }

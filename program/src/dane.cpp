@@ -156,6 +156,7 @@ double Dane::NS(const string& fun)
     k++;
     if(k>liczba_iteracji){ kryterium_stopu=4; break;}
     }
+    if (!kryterium_stopu) { cout<<" gradient"<<endl; kryterium_stopu=1;}
     return f;
 }
 
@@ -189,7 +190,7 @@ void Dane::Powell()
     }
     for (int i=0; i<ilosc_ograniczen; i++) {
         parser.SetExpr(ograniczenia[i].toStdString());
-        g0[i]=-parser.Eval();
+        g0[i]=parser.Eval();
     }
     int theEnd=1;
     while(theEnd){
@@ -201,7 +202,7 @@ void Dane::Powell()
             if(H(g0[i]+theta[i])){
                 string s=to_string(sigma[i]);
                 string t=to_string(theta[i]);
-                funkcja_powella+="+"+s+"*(-("+ograniczenia[i].toStdString()+")+"+t+")^2";
+                funkcja_powella+="+"+s+"*("+ograniczenia[i].toStdString()+"+"+t+")^2";
             }
         }
         parser.SetExpr(funkcja_powella);
@@ -221,7 +222,7 @@ void Dane::Powell()
 
         for (int i=0; i<ilosc_ograniczen; i++) {
             parser.SetExpr(ograniczenia[i].toStdString());
-            g[i]=-parser.Eval();
+            g[i]=parser.Eval();
             if(H(g[i]+theta[i])) c_k=max(c_k,abs(g[i]));
         }
         if(c_k>0) c=c_k;
