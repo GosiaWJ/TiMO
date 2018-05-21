@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->funkcja_celu_box->addItem("2*x1^2+x2^2-2*x1*x2");
     ui->funkcja_celu_box->addItem("(x1-2)^2+(x2-1)^2");
     ui->funkcja_celu_box->addItem("x1^4+x2^4-x1^2-x2^2");
+    ui->funkcja_celu_box->addItem("(x1^2 +x2 -11)^2 +(x1 +x2^2 -7)^2");
     this->setWindowTitle("Powell&NS Optimisation Algorithm");
     ui->statusBar->setVisible(true);
     ui->statusBar->setUpdatesEnabled(true);
@@ -153,7 +154,7 @@ void MainWindow::dodaj_wynik()
     string wiadomosc;
     for(int k=0;k<data->punkty_powella[0].size();k++){
         if (k==0)     wiadomosc="Punkt startowy: ";
-        else     wiadomosc="Iteracja "+to_string(k+1)+": ";
+        else     wiadomosc="Iteracja "+to_string(k)+": ";
     for(int i=0;i<data->ilosc_zmiennych;i++) wiadomosc+="x"+to_string(i+1)+" ="+to_string(data->punkty_powella[i].at(k))+ " ";
     wiadomosc+="f(x) = "+to_string(data->punkty_powella[data->ilosc_zmiennych].at(k));
     ui->wyniki->addItem(wiadomosc.c_str());

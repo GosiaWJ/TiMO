@@ -183,7 +183,7 @@ void Dane::Powell()
     f=parser.Eval();
     punkty_powella[ilosc_zmiennych].append(f);
 
-    cmin=pow(10,-5); //to jest pewnie jakiś epsilon
+    cmin=0;//pow(10,-12); //to jest pewnie jakiś epsilon
     for (int i=0; i<ilosc_ograniczen; i++){
        sigma[i]=1;
        theta[i]=0;
@@ -270,7 +270,7 @@ void Dane::Powell()
 
         }
         double blad=0.0;
-        for (int i=0; i<ilosc_zmiennych; i++) blad=blad + pow(abs(punkty_powella->last()-punkty_powella->at(punkty_powella->size()-2)),2);
+        for (int i=0; i<ilosc_zmiennych; i++) blad=blad + pow(abs(punkty_powella[i].last()-punkty_powella[i].at(punkty_powella[i].size()-2)),2);
         blad=sqrt(blad);
         if(blad<pow(10,epsilon1)){ kryterium_stopu=2; break;}
         if(abs(f_przed-f)<pow(10,epsilon2)) {kryterium_stopu=3; break;}
