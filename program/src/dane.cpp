@@ -21,7 +21,6 @@ Dane::Dane(int e0, int e1, int e2, double *x0, int l, int ogr, int zmienne, doub
     punkt_startowy=new double[zmienne];
     punkt_startowy=x0;
     liczba_iteracji=l;
-    cout<<"liczba_iteracji "<<l<<endl;
     ilosc_zmiennych=zmienne; //zmienić to potem
     punkty_powella=new QVector<double>[ilosc_zmiennych+1];
     ilosc_ograniczen=ogr;
@@ -59,7 +58,7 @@ double *Dane::Gradient(const string& fun)
            derivative[i]= Ev3::Diff(expr, i); //tu się liczą pochodne
            parser.SetExpr(derivative[i]->ToString());
            gradient[i]=parser.Eval();
-    }
+       }
 
     return gradient;
 
@@ -85,7 +84,7 @@ void Dane::Optimalize()
 
     }
      catch(mu::Parser::exception_type &e){
-        cout<<"BŁĄD PARSERA" <<endl;
+       // cout<<"BŁĄD PARSERA" <<endl;
         QMessageBox::StandardButton reply;
           reply=QMessageBox::question(nullptr, "Error", "Check your formula. MuParser doesn't understand. Try again?",
                                                 QMessageBox::Yes|QMessageBox::No,  QMessageBox::Yes);
@@ -99,7 +98,6 @@ void Dane::Optimalize()
 
 double Dane::NS(const string& fun)
 {
-    cout<<"NS"<<tau_r<<" "<<beta<<endl;
     int n=ilosc_zmiennych; //l. zmiennych
     double g2=10;
     double epsilon=pow(10,epsilon0);
@@ -156,7 +154,7 @@ double Dane::NS(const string& fun)
     k++;
     if(k>liczba_iteracji){ kryterium_stopu=4; break;}
     }
-    if (!kryterium_stopu) { cout<<" gradient"<<endl; kryterium_stopu=1;}
+    if (!kryterium_stopu) {  kryterium_stopu=1;}
     return f;
 }
 

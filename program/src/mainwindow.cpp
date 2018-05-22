@@ -11,10 +11,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->x_20->setVisible(false);
-    ui->x_30->setVisible(false);
-    ui->x_40->setVisible(false);
-    ui->x_50->setVisible(false);
+    ui->x_20->setEnabled(false);
+    ui->x_30->setEnabled(false);
+    ui->x_40->setEnabled(false);
+    ui->x_50->setEnabled(false);
     connect(ui->ilosc_zmiennych_spinbox,SIGNAL(valueChanged(int)),this,SLOT(zmien_ilosc_zmiennych(int)));
    // connect(data,SIGNAL(iteracja(int)),this,SLOT(dodaj_wynik(int)));
     ui->funkcja_celu_box->addItem("2*x1^2+x2^2-2*x1*x2");
@@ -112,39 +112,39 @@ void MainWindow::zmien_ilosc_zmiennych(int arg1)
 {
    int ilosc=arg1;
    if(ilosc==1)
-   {ui->x_20->setVisible(false);
-   ui->x_30->setVisible(false);
-   ui->x_40->setVisible(false);
-   ui->x_50->setVisible(false);
-   ui->horizontalSpacer_8->changeSize(160,10);
+   {ui->x_20->setEnabled(false);
+   ui->x_30->setEnabled(false);
+   ui->x_40->setEnabled(false);
+   ui->x_50->setEnabled(false);
+  // ui->horizontalSpacer_8->changeSize(160,10);
    }
     if(ilosc==2)
-    {ui->x_20->setVisible(true);
-    ui->x_30->setVisible(false);
-    ui->x_40->setVisible(false);
-    ui->x_50->setVisible(false);
-    ui->horizontalSpacer_8->changeSize(125,10);
+    {ui->x_20->setEnabled(true);
+    ui->x_30->setEnabled(false);
+    ui->x_40->setEnabled(false);
+    ui->x_50->setEnabled(false);
+  //  ui->horizontalSpacer_8->changeSize(125,10);
     }
     if(ilosc==3)
-    {ui->x_20->setVisible(true);
-    ui->x_30->setVisible(true);
-    ui->x_40->setVisible(false);
-    ui->x_50->setVisible(false);
-    ui->horizontalSpacer_8->changeSize(90,10);
+    {ui->x_20->setEnabled(true);
+    ui->x_30->setEnabled(true);
+    ui->x_40->setEnabled(false);
+    ui->x_50->setEnabled(false);
+  //  ui->horizontalSpacer_8->changeSize(90,10);
     }
     if(ilosc==4)
-    {ui->x_20->setVisible(true);
-    ui->x_30->setVisible(true);
-    ui->x_40->setVisible(true);
-    ui->x_50->setVisible(false);
-    ui->horizontalSpacer_8->changeSize(55,10);
+    {ui->x_20->setEnabled(true);
+    ui->x_30->setEnabled(true);
+    ui->x_40->setEnabled(true);
+    ui->x_50->setEnabled(false);
+//    ui->horizontalSpacer_8->changeSize(55,10);
     }
     if(ilosc==5)
-    {ui->x_20->setVisible(true);
-    ui->x_30->setVisible(true);
-    ui->x_40->setVisible(true);
-    ui->x_50->setVisible(true);
-    ui->horizontalSpacer_8->changeSize(15,10);
+    {ui->x_20->setEnabled(true);
+    ui->x_30->setEnabled(true);
+    ui->x_40->setEnabled(true);
+    ui->x_50->setEnabled(true);
+   // ui->horizontalSpacer_8->changeSize(15,10);
     }
 }
 
